@@ -1,9 +1,8 @@
-# HELP! I'm being framed!
+# Framed (was HELP! I'm being framed!)
 
 ![Several framed blocks](assets/demo_640x360.png)
 
-HELP! I'm being framed! (or Framed, for short) is a
-[Minecraft](https://www.minecraft.net/) mod for the
+is a fork of [HELP! I'm being framed!](https://github.com/alex5nader/Framed), a [Minecraft](https://www.minecraft.net/) mod for the
 [Fabric](https://fabricmc.net/use/) mod loader.
 There are no plans for a version for the Forge mod loader.
 
