@@ -1,4 +1,4 @@
-package dev.alexnader.framed.block;
+package io.github.null2264.framed.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

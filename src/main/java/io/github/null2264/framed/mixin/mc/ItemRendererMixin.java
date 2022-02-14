@@ -1,4 +1,4 @@
-package dev.alexnader.framed.mixin.mc;
+package io.github.null2264.framed.mixin.mc;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import static dev.alexnader.framed.Framed.ITEMS;
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.ITEMS;
+import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)

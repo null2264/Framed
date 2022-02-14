@@ -1,11 +1,11 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
-import static dev.alexnader.framed.Framed.BLOCKS;
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.BLOCKS;
+import static io.github.null2264.framed.Framed.META;
 
 public class FramedBlockEntityTypes extends Registrar<BlockEntityType<?>> {
     public FramedBlockEntityTypes() {

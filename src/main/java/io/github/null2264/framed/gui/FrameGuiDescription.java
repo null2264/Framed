@@ -1,14 +1,14 @@
-package dev.alexnader.framed.gui;
+package io.github.null2264.framed.gui;
 
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerContext;
 
-import static dev.alexnader.framed.Framed.META;
-import static dev.alexnader.framed.Framed.SPECIAL_ITEMS;
-import static dev.alexnader.framed.util.GuiUtil.*;
+import static io.github.null2264.framed.Framed.META;
+import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
+import static io.github.null2264.framed.util.GuiUtil.*;
 
 public class FrameGuiDescription extends SyncedGuiDescription {
     public FrameGuiDescription(final int syncId, final PlayerInventory playerInventory, final ScreenHandlerContext context) {

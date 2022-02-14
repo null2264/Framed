@@ -1,7 +1,7 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
-import dev.alexnader.framed.data.OverlayDataListener;
-import dev.alexnader.framed.items.SpecialItems;
+import io.github.null2264.framed.data.OverlayDataListener;
+import io.github.null2264.framed.items.SpecialItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;

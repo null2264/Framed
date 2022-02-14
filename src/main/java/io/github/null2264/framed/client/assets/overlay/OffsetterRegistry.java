@@ -1,7 +1,7 @@
-package dev.alexnader.framed.client.assets.overlay;
+package io.github.null2264.framed.client.assets.overlay;
 
 import com.mojang.serialization.Codec;
-import dev.alexnader.framed.util.Identifiable;
+import io.github.null2264.framed.util.Identifiable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

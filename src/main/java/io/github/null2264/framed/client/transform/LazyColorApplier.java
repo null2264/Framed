@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client.transform;
+package io.github.null2264.framed.client.transform;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

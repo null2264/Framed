@@ -1,12 +1,12 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
-import dev.alexnader.framed.items.FramersHammer;
+import io.github.null2264.framed.items.FramersHammer;
 import net.minecraft.item.Item;
 import net.minecraft.item.WallStandingBlockItem;
 import net.minecraft.util.registry.Registry;
 
-import static dev.alexnader.framed.Framed.BLOCKS;
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.BLOCKS;
+import static io.github.null2264.framed.Framed.META;
 
 @SuppressWarnings("unused")
 public class FramedItems extends Registrar<Item> {

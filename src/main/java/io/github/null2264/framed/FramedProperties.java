@@ -1,4 +1,4 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
 import net.minecraft.state.property.BooleanProperty;
 

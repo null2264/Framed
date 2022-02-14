@@ -1,4 +1,4 @@
-package dev.alexnader.framed.gui;
+package io.github.null2264.framed.gui;
 
 import io.github.cottonmc.cotton.gui.ValidatedSlot;
 import net.minecraft.inventory.Inventory;

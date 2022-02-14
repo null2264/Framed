@@ -1,7 +1,7 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
-import dev.alexnader.framed.block.frame.data.Sections;
-import dev.alexnader.framed.gui.FrameGuiDescription;
+import io.github.null2264.framed.block.frame.data.Sections;
+import io.github.null2264.framed.gui.FrameGuiDescription;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.ItemGroup;
@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static dev.alexnader.framed.Framed.ITEMS;
+import static io.github.null2264.framed.Framed.ITEMS;
 
 public class FramedMeta {
     public final String NAMESPACE = "framed";

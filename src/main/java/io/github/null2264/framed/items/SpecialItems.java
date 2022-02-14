@@ -1,9 +1,9 @@
-package dev.alexnader.framed.items;
+package io.github.null2264.framed.items;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import com.mojang.datafixers.util.Pair;
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.BooleanProperty;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import static dev.alexnader.framed.Framed.PROPERTIES;
+import static io.github.null2264.framed.Framed.PROPERTIES;
 
 public class SpecialItems {
     public static class SpecialItem {

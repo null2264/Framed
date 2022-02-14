@@ -1,4 +1,4 @@
-package dev.alexnader.framed.block.frame.data;
+package io.github.null2264.framed.block.frame.data;
 
 import com.google.common.collect.Streams;
 import com.mojang.datafixers.util.Pair;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static dev.alexnader.framed.Framed.OVERLAYS;
+import static io.github.null2264.framed.Framed.OVERLAYS;
 
 public class FrameData {
     private static Optional<ItemStack>[] itemsFromTag(final Sections sections, final ListTag tag) {

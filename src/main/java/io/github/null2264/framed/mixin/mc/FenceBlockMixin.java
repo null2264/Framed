@@ -1,6 +1,6 @@
-package dev.alexnader.framed.mixin.mc;
+package io.github.null2264.framed.mixin.mc;
 
-import dev.alexnader.framed.Framed;
+import io.github.null2264.framed.Framed;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.util.math.Direction;

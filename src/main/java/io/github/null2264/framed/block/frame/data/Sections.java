@@ -1,6 +1,6 @@
-package dev.alexnader.framed.block.frame.data;
+package io.github.null2264.framed.block.frame.data;
 
-import dev.alexnader.framed.util.Section;
+import io.github.null2264.framed.util.Section;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.IntTag;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static dev.alexnader.framed.Framed.SPECIAL_ITEMS;
+import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 
 public class Sections {
     public static final int BASE_INDEX = 0;

@@ -1,4 +1,4 @@
-package dev.alexnader.framed.util;
+package io.github.null2264.framed.util;
 
 import com.mojang.datafixers.util.Function5;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;

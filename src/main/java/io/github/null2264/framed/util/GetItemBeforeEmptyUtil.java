@@ -1,6 +1,6 @@
-package dev.alexnader.framed.util;
+package io.github.null2264.framed.util;
 
-import dev.alexnader.framed.mixin.mc.GetItemBeforeEmpty;
+import io.github.null2264.framed.mixin.mc.GetItemBeforeEmpty;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

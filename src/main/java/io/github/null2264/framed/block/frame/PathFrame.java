@@ -1,6 +1,6 @@
-package dev.alexnader.framed.block.frame;
+package io.github.null2264.framed.block.frame;
 
-import dev.alexnader.framed.block.PathBlock;
+import io.github.null2264.framed.block.PathBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.Direction;
 

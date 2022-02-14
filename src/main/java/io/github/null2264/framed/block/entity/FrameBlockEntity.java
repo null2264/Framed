@@ -1,9 +1,9 @@
-package dev.alexnader.framed.block.entity;
+package io.github.null2264.framed.block.entity;
 
-import dev.alexnader.framed.block.frame.data.FrameData;
-import dev.alexnader.framed.block.frame.data.Sections;
-import dev.alexnader.framed.gui.FrameGuiDescription;
-import dev.alexnader.framed.items.SpecialItems;
+import io.github.null2264.framed.block.frame.data.FrameData;
+import io.github.null2264.framed.block.frame.data.Sections;
+import io.github.null2264.framed.gui.FrameGuiDescription;
+import io.github.null2264.framed.items.SpecialItems;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
@@ -33,9 +33,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static dev.alexnader.framed.Framed.SPECIAL_ITEMS;
-import static dev.alexnader.framed.util.GetItemBeforeEmptyUtil.getItemBeforeEmpty;
-import static dev.alexnader.framed.util.ValidQuery.checkIf;
+import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
+import static io.github.null2264.framed.util.GetItemBeforeEmptyUtil.getItemBeforeEmpty;
+import static io.github.null2264.framed.util.ValidQuery.checkIf;
 
 public class FrameBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory, RenderAttachmentBlockEntity, BlockEntityClientSerializable {
     private FrameData data;

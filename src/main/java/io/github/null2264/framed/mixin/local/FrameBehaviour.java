@@ -1,13 +1,13 @@
-package dev.alexnader.framed.mixin.local;
+package io.github.null2264.framed.mixin.local;
 
 import com.mojang.datafixers.util.Function3;
 import com.mojang.datafixers.util.Unit;
-import dev.alexnader.framed.block.FrameSlotInfo;
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
-import dev.alexnader.framed.block.frame.*;
-import dev.alexnader.framed.items.FramersHammer;
-import dev.alexnader.framed.items.SpecialItems;
-import dev.alexnader.framed.util.ValidQuery;
+import io.github.null2264.framed.block.FrameSlotInfo;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.frame.*;
+import io.github.null2264.framed.items.FramersHammer;
+import io.github.null2264.framed.items.SpecialItems;
+import io.github.null2264.framed.util.ValidQuery;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -43,8 +43,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static dev.alexnader.framed.Framed.*;
-import static dev.alexnader.framed.util.ValidQuery.checkIf;
+import static io.github.null2264.framed.Framed.*;
+import static io.github.null2264.framed.util.ValidQuery.checkIf;
 
 @Mixin({
     BlockFrame.class,

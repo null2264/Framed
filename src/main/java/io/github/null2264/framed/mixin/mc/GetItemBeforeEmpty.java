@@ -1,4 +1,4 @@
-package dev.alexnader.framed.mixin.mc;
+package io.github.null2264.framed.mixin.mc;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

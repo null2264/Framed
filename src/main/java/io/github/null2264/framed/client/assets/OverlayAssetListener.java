@@ -1,11 +1,11 @@
-package dev.alexnader.framed.client.assets;
+package io.github.null2264.framed.client.assets;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import dev.alexnader.framed.client.assets.overlay.Overlay;
+import io.github.null2264.framed.client.assets.overlay.Overlay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.resource.SimpleResourceReloadListener;
@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
 public class OverlayAssetListener implements SimpleResourceReloadListener<Collection<Identifier>> {

@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client;
+package io.github.null2264.framed.client;
 
 import dev.inkwell.conrad.api.Config;
 import dev.inkwell.conrad.api.value.ValueKey;

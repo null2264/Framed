@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client.assets.overlay;
+package io.github.null2264.framed.client.assets.overlay;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 import javax.annotation.Nonnull;
 import java.util.Optional;
 
-import static dev.alexnader.framed.client.FramedClient.CODECS;
+import static io.github.null2264.framed.client.FramedClient.CODECS;
 
 @Environment(EnvType.CLIENT)
 public class Offsetters {

@@ -1,8 +1,8 @@
-package dev.alexnader.framed.client.assets.overlay;
+package io.github.null2264.framed.client.assets.overlay;
 
 import com.mojang.serialization.Codec;
-import dev.alexnader.framed.client.util.ToOptional;
-import dev.alexnader.framed.util.Float4;
+import io.github.null2264.framed.client.util.ToOptional;
+import io.github.null2264.framed.util.Float4;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.math.Direction;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static dev.alexnader.framed.client.FramedClient.CODECS;
+import static io.github.null2264.framed.client.FramedClient.CODECS;
 
 @Environment(EnvType.CLIENT)
 public abstract class SidedOffsetters {

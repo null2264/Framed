@@ -1,12 +1,12 @@
-package dev.alexnader.framed.client;
+package io.github.null2264.framed.client;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.alexnader.framed.client.assets.overlay.Offsetter;
-import dev.alexnader.framed.client.assets.overlay.OffsetterRegistry;
-import dev.alexnader.framed.util.Identifiable;
+import io.github.null2264.framed.client.assets.overlay.Offsetter;
+import io.github.null2264.framed.client.assets.overlay.OffsetterRegistry;
+import io.github.null2264.framed.util.Identifiable;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

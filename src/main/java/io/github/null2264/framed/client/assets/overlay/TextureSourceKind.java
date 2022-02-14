@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client.assets.overlay;
+package io.github.null2264.framed.client.assets.overlay;
 
 import com.mojang.serialization.DataResult;
 import net.fabricmc.api.EnvType;

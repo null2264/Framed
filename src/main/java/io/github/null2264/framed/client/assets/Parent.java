@@ -1,6 +1,6 @@
-package dev.alexnader.framed.client.assets;
+package io.github.null2264.framed.client.assets;
 
-import dev.alexnader.framed.client.util.ToOptional;
+import io.github.null2264.framed.client.util.ToOptional;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

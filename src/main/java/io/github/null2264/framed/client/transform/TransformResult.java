@@ -1,4 +1,4 @@
-package dev.alexnader.framed.client.transform;
+package io.github.null2264.framed.client.transform;
 
 import javax.annotation.Nullable;
 

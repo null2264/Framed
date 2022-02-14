@@ -28,11 +28,11 @@
 // - https://github.com/Hephaestus-Dev/Automotion/blob/f3f5e3d1251a925efa2c3f32e67f7eaa0b732692/src/main/java/hephaestus/dev/automotion/client/AutomotionRenderLayers.java
 // - https://github.com/Hephaestus-Dev/Automotion/blob/f3f5e3d1251a925efa2c3f32e67f7eaa0b732692/src/main/java/hephaestus/dev/automotion/client/model/AutomotionModel.java
 
-package dev.alexnader.framed.client;
+package io.github.null2264.framed.client;
 
-import dev.alexnader.framed.block.frame.Frame;
-import dev.alexnader.framed.mixin.mc.BlockItemAccess;
-import dev.alexnader.framed.mixin.mc.WorldRendererAccess;
+import io.github.null2264.framed.block.frame.Frame;
+import io.github.null2264.framed.mixin.mc.BlockItemAccess;
+import io.github.null2264.framed.mixin.mc.WorldRendererAccess;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
@@ -69,7 +69,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
-import static dev.alexnader.framed.Framed.BLOCKS;
+import static io.github.null2264.framed.Framed.BLOCKS;
 
 @Environment(EnvType.CLIENT)
 public class FramePreviewOutline {

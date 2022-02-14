@@ -1,6 +1,6 @@
-package dev.alexnader.framed.client.gui;
+package io.github.null2264.framed.client.gui;
 
-import dev.alexnader.framed.gui.FrameGuiDescription;
+import io.github.null2264.framed.gui.FrameGuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

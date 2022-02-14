@@ -1,9 +1,9 @@
-package dev.alexnader.framed.items;
+package io.github.null2264.framed.items;
 
 import com.mojang.datafixers.util.Pair;
-import dev.alexnader.framed.block.FrameSlotInfo;
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
-import dev.alexnader.framed.block.frame.data.FrameData;
+import io.github.null2264.framed.block.FrameSlotInfo;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.frame.data.FrameData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

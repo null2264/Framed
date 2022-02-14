@@ -1,6 +1,6 @@
-package dev.alexnader.framed;
+package io.github.null2264.framed;
 
-import dev.alexnader.framed.block.frame.*;
+import io.github.null2264.framed.block.frame.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.Function;
 
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.META;
 
 public class FramedBlocks extends Registrar<Block> {
     public final BlockFrame BLOCK_FRAME;

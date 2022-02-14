@@ -1,4 +1,4 @@
-package dev.alexnader.framed.data;
+package io.github.null2264.framed.data;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.META;
 
 public class OverlayDataListener implements SimpleResourceReloadListener<Collection<Identifier>> {
     private final Map<Ingredient, Identifier> triggers = new HashMap<>();

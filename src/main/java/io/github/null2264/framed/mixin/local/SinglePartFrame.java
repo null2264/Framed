@@ -1,15 +1,15 @@
-package dev.alexnader.framed.mixin.local;
+package io.github.null2264.framed.mixin.local;
 
-import dev.alexnader.framed.block.FrameSlotInfo;
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
-import dev.alexnader.framed.block.frame.*;
-import dev.alexnader.framed.block.frame.data.Sections;
+import io.github.null2264.framed.block.FrameSlotInfo;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.frame.*;
+import io.github.null2264.framed.block.frame.data.Sections;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.META;
 
 @Mixin({
     BlockFrame.class,

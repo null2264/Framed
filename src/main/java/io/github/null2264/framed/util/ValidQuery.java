@@ -1,6 +1,6 @@
-package dev.alexnader.framed.util;
+package io.github.null2264.framed.util;
 
-import dev.alexnader.framed.block.frame.Frame;
+import io.github.null2264.framed.block.frame.Frame;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static dev.alexnader.framed.Framed.OVERLAYS;
-import static dev.alexnader.framed.Framed.SPECIAL_ITEMS;
+import static io.github.null2264.framed.Framed.OVERLAYS;
+import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 
 public class ValidQuery {
     private ValidQuery() {}

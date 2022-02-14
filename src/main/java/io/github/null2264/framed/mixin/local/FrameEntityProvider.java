@@ -1,7 +1,7 @@
-package dev.alexnader.framed.mixin.local;
+package io.github.null2264.framed.mixin.local;
 
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
-import dev.alexnader.framed.block.frame.*;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.frame.*;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.world.BlockView;
@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 import javax.annotation.Nullable;
 
-import static dev.alexnader.framed.Framed.BLOCK_ENTITY_TYPES;
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.BLOCK_ENTITY_TYPES;
+import static io.github.null2264.framed.Framed.META;
 
 @Mixin({
     BlockFrame.class,

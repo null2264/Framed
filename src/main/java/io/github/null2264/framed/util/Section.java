@@ -1,4 +1,4 @@
-package dev.alexnader.framed.util;
+package io.github.null2264.framed.util;
 
 import javax.annotation.Nonnull;
 import java.util.Iterator;

@@ -1,7 +1,7 @@
-package dev.alexnader.framed.block;
+package io.github.null2264.framed.block;
 
-import dev.alexnader.framed.block.entity.FrameBlockEntity;
-import dev.alexnader.framed.block.frame.data.Sections;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import io.github.null2264.framed.block.frame.data.Sections;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;

@@ -1,7 +1,7 @@
-package dev.alexnader.framed.client.assets.overlay;
+package io.github.null2264.framed.client.assets.overlay;
 
-import dev.alexnader.framed.client.util.ToOptional;
-import dev.alexnader.framed.util.Float4;
+import io.github.null2264.framed.client.util.ToOptional;
+import io.github.null2264.framed.util.Float4;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;

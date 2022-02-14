@@ -1,12 +1,12 @@
-package dev.alexnader.framed.client;
+package io.github.null2264.framed.client;
 
 import com.mojang.serialization.Codec;
-import dev.alexnader.framed.client.assets.OverlayAssetListener;
-import dev.alexnader.framed.client.assets.overlay.OffsetterRegistry;
-import dev.alexnader.framed.client.assets.overlay.ZeroOffsetter;
-import dev.alexnader.framed.client.gui.FrameScreen;
-import dev.alexnader.framed.client.transform.FrameTransform;
-import dev.alexnader.framed.items.FramersHammer;
+import io.github.null2264.framed.client.assets.OverlayAssetListener;
+import io.github.null2264.framed.client.assets.overlay.OffsetterRegistry;
+import io.github.null2264.framed.client.assets.overlay.ZeroOffsetter;
+import io.github.null2264.framed.client.gui.FrameScreen;
+import io.github.null2264.framed.client.transform.FrameTransform;
+import io.github.null2264.framed.items.FramersHammer;
 import grondag.jmx.api.QuadTransformRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -25,8 +25,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
-import static dev.alexnader.framed.Framed.ITEMS;
-import static dev.alexnader.framed.Framed.META;
+import static io.github.null2264.framed.Framed.ITEMS;
+import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
 public class FramedClient implements ClientModInitializer {

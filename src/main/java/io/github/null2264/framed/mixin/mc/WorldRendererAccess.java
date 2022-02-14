@@ -26,7 +26,7 @@
 // Permalinks:
 // - https://github.com/Hephaestus-Dev/Automotion/blob/f3f5e3d1251a925efa2c3f32e67f7eaa0b732692/src/main/java/hephaestus/dev/automotion/mixin/client/render/WorldRendererMixin.java
 
-package dev.alexnader.framed.mixin.mc;
+package io.github.null2264.framed.mixin.mc;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
