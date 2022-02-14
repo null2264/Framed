@@ -9,7 +9,7 @@
   "description": "Blocks with customizable textures",
   "icon": "assets/framed/icon.png",
 
-  "authors": [ "noobstar" ],
+  "authors": [ "noobstar", "null2264" ],
   "contributors": [ "Haven King" ],
   "contact": {
     "sources": "https://github.com/alex5nader/Framed",
@@ -22,13 +22,13 @@
 
   "entrypoints": {
     "main": [
-      "dev.alexnader.framed.Framed"
+      "io.github.null2264.framed.Framed"
     ],
     "client": [
-      "dev.alexnader.framed.client.FramedClient"
+      "io.github.null2264.framed.client.FramedClient"
     ],
     "config": [
-      "dev.alexnader.framed.client.FramedConfig"
+      "io.github.null2264.framed.client.FramedConfig"
     ]
   },
   "mixins": [
@@ -45,7 +45,6 @@
   },
   "suggests": {
     "canvas": "*",
-    "couplings": "*",
     "modmenu": "*"
   },
   "conflicts": {
