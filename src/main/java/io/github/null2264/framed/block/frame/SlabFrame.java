@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
@@ -76,7 +77,7 @@ public class SlabFrame extends SlabBlock implements FrameSlotInfo, BlockEntityPr
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(final BlockView world) {
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new FrameBlockEntity(BLOCK_ENTITY_TYPES.SLAB_FRAME, META.SLAB_FRAME_SECTIONS);
     }
 }
