@@ -45,7 +45,7 @@ public class WallBlockMixin extends Block
 
     @SuppressWarnings("unused")
     @Shadow
-    private static VoxelShape method_24426(VoxelShape voxelShape, WallShape wallShape, VoxelShape voxelShape2, VoxelShape voxelShape3) {
+    private static VoxelShape getVoxelShape(VoxelShape base, WallShape wallShape, VoxelShape tall, VoxelShape low) {
         throw new IllegalStateException("Shadow method should not run.");
     }
 
