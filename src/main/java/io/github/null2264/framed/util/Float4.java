@@ -2,7 +2,8 @@ package io.github.null2264.framed.util;
 
 import java.util.PrimitiveIterator;
 
-public class Float4 {
+public class Float4
+{
     public final float a;
     public final float b;
     public final float c;
@@ -19,15 +20,15 @@ public class Float4 {
         return new Float4(a, b, c, d);
     }
 
+    public static Float4 fromIterator(final PrimitiveIterator.OfDouble doubles) {
+        return new Float4((float) doubles.nextDouble(), (float) doubles.nextDouble(), (float) doubles.nextDouble(), (float) doubles.nextDouble());
+    }
+
     public float min() {
         return Math.min(Math.min(Math.min(a, b), c), d);
     }
 
     public float max() {
         return Math.max(Math.max(Math.max(a, b), c), d);
-    }
-
-    public static Float4 fromIterator(final PrimitiveIterator.OfDouble doubles) {
-        return new Float4((float) doubles.nextDouble(), (float) doubles.nextDouble(), (float) doubles.nextDouble(), (float) doubles.nextDouble());
     }
 }

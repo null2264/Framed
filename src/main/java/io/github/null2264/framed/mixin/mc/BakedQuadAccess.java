@@ -9,9 +9,11 @@ import org.spongepowered.asm.mixin.gen.Accessor;
  * Mixin for {@link BakedQuad} which provides public access to the quad's sprite.
  */
 @Mixin(BakedQuad.class)
-public interface BakedQuadAccess {
+public interface BakedQuadAccess
+{
     /**
      * Get this {@link BakedQuad}'s sprite.
+     *
      * @return this quad's sprite
      */
     @Accessor("sprite")

@@ -6,7 +6,8 @@ import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class FunctionalUtil {
+public class FunctionalUtil
+{
     private FunctionalUtil() {
         throw new IllegalStateException("Should not instantiate utility class.");
     }

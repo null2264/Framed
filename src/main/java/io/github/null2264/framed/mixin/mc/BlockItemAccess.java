@@ -9,7 +9,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import javax.annotation.Nullable;
 
 @Mixin(BlockItem.class)
-public interface BlockItemAccess {
+public interface BlockItemAccess
+{
     @Invoker("getPlacementState")
-    @Nullable BlockState getPlacementStateProxy(ItemPlacementContext context);
+    @Nullable
+    BlockState getPlacementStateProxy(ItemPlacementContext context);
 }

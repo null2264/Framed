@@ -1,13 +1,13 @@
 package io.github.null2264.framed.client;
 
 import com.mojang.serialization.Codec;
+import grondag.jmx.api.QuadTransformRegistry;
 import io.github.null2264.framed.client.assets.OverlayAssetListener;
 import io.github.null2264.framed.client.assets.overlay.OffsetterRegistry;
 import io.github.null2264.framed.client.assets.overlay.ZeroOffsetter;
 import io.github.null2264.framed.client.gui.FrameScreen;
 import io.github.null2264.framed.client.transform.FrameTransform;
 import io.github.null2264.framed.items.FramersHammer;
-import grondag.jmx.api.QuadTransformRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,7 +29,8 @@ import static io.github.null2264.framed.Framed.ITEMS;
 import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
-public class FramedClient implements ClientModInitializer {
+public class FramedClient implements ClientModInitializer
+{
     public static FramedCodecs CODECS;
 
     public static OverlayAssetListener CLIENT_OVERLAYS;
@@ -53,7 +54,7 @@ public class FramedClient implements ClientModInitializer {
             final int textureStart = "textures/".length();
             final int pngLen = ".png".length();
 
-            for (final Identifier id : MinecraftClient.getInstance().getResourceManager().findResources("textures/framed", s->s.endsWith(".png"))) {
+            for (final Identifier id : MinecraftClient.getInstance().getResourceManager().findResources("textures/framed", s -> s.endsWith(".png"))) {
                 registry.register(new Identifier(id.getNamespace(), id.getPath().substring(textureStart, id.getPath().length() - pngLen)));
             }
         });

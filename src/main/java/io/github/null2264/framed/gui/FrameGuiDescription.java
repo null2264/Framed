@@ -1,8 +1,8 @@
 package io.github.null2264.framed.gui;
 
-import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
+import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandlerContext;
 
@@ -10,7 +10,8 @@ import static io.github.null2264.framed.Framed.META;
 import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 import static io.github.null2264.framed.util.GuiUtil.*;
 
-public class FrameGuiDescription extends SyncedGuiDescription {
+public class FrameGuiDescription extends SyncedGuiDescription
+{
     public FrameGuiDescription(final int syncId, final PlayerInventory playerInventory, final ScreenHandlerContext context) {
         this(
             syncId,

@@ -12,37 +12,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public abstract class Parent implements ToOptional<Parent> {
-    public static Parent ofNullable(@Nullable final Identifier parentId) {
-        if (parentId == null) {
-            return NONE;
-        } else {
-            return new Some(parentId);
-        }
-    }
-
-    public abstract Optional<Identifier> id();
-    public abstract <T> T run(@Nonnull Function<Identifier, T> f, T whenNone);
-
-    public static class Some extends Parent implements ToOptional.Some<Parent> {
-        private final @Nonnull Identifier parent;
-
-        public Some(final @Nonnull Identifier parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public Optional<Identifier> id() {
-            return Optional.of(parent);
-        }
-
-        @Override
-        public <T> T run(@Nonnull final Function<Identifier, T> f, final T whenNone) {
-            return f.apply(parent);
-        }
-    }
-
-    public static final Parent NONE = new Parent() {
+public abstract class Parent implements ToOptional<Parent>
+{
+    public static final Parent NONE = new Parent()
+    {
         @Override
         public Optional<Identifier> id() {
             return Optional.empty();
@@ -63,4 +36,36 @@ public abstract class Parent implements ToOptional<Parent> {
             return Optional.empty();
         }
     };
+
+    public static Parent ofNullable(@Nullable final Identifier parentId) {
+        if (parentId == null) {
+            return NONE;
+        } else {
+            return new Some(parentId);
+        }
+    }
+
+    public abstract Optional<Identifier> id();
+
+    public abstract <T> T run(@Nonnull Function<Identifier, T> f, T whenNone);
+
+    public static class Some extends Parent implements ToOptional.Some<Parent>
+    {
+        private final @Nonnull
+        Identifier parent;
+
+        public Some(final @Nonnull Identifier parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public Optional<Identifier> id() {
+            return Optional.of(parent);
+        }
+
+        @Override
+        public <T> T run(@Nonnull final Function<Identifier, T> f, final T whenNone) {
+            return f.apply(parent);
+        }
+    }
 }

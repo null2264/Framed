@@ -4,7 +4,8 @@ import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Section implements Iterable<Integer> {
+public class Section implements Iterable<Integer>
+{
     private final int start;
     private final int end;
 
@@ -65,7 +66,8 @@ public class Section implements Iterable<Integer> {
         return new SectionIterator();
     }
 
-    private class SectionIterator implements Iterator<Integer> {
+    private class SectionIterator implements Iterator<Integer>
+    {
         int current = start;
 
         @Override

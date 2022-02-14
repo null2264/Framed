@@ -17,10 +17,21 @@ import java.util.function.Function;
 import static io.github.null2264.framed.Framed.OVERLAYS;
 import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 
-public class ValidQuery {
-    private ValidQuery() {}
+public class ValidQuery
+{
+    private ValidQuery() {
+    }
 
-    public static class ItemStackValidQuery {
+    public static ItemStackValidQuery checkIf(final ItemStack stack) {
+        return new ItemStackValidQuery(stack);
+    }
+
+    public static BlockStateValidQuery checkIf(final BlockState state) {
+        return new BlockStateValidQuery(state);
+    }
+
+    public static class ItemStackValidQuery
+    {
         private final ItemStack stack;
 
         public ItemStackValidQuery(final ItemStack stack) {
@@ -51,7 +62,8 @@ public class ValidQuery {
         }
     }
 
-    public static class BlockStateValidQuery {
+    public static class BlockStateValidQuery
+    {
         private final BlockState state;
 
         public BlockStateValidQuery(final BlockState state) {
@@ -65,13 +77,5 @@ public class ValidQuery {
 
             return state.getOutlineShape(world, pos).getBoundingBoxes().equals(VoxelShapes.fullCube().getBoundingBoxes());
         }
-    }
-
-    public static ItemStackValidQuery checkIf(final ItemStack stack) {
-        return new ItemStackValidQuery(stack);
-    }
-
-    public static BlockStateValidQuery checkIf(final BlockState state) {
-        return new BlockStateValidQuery(state);
     }
 }

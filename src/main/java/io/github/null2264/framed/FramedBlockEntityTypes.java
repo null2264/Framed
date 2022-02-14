@@ -7,7 +7,8 @@ import net.minecraft.util.registry.Registry;
 import static io.github.null2264.framed.Framed.BLOCKS;
 import static io.github.null2264.framed.Framed.META;
 
-public class FramedBlockEntityTypes extends Registrar<BlockEntityType<?>> {
+public class FramedBlockEntityTypes extends Registrar<BlockEntityType<?>>
+{
     public FramedBlockEntityTypes() {
         super(Registry.BLOCK_ENTITY_TYPE);
     }

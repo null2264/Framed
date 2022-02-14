@@ -22,8 +22,10 @@ import java.util.concurrent.Executor;
 
 import static io.github.null2264.framed.Framed.META;
 
-public class OverlayDataListener implements SimpleResourceReloadListener<Collection<Identifier>> {
+public class OverlayDataListener implements SimpleResourceReloadListener<Collection<Identifier>>
+{
     private final Map<Ingredient, Identifier> triggers = new HashMap<>();
+    private final Identifier id = META.id("data/overlay");
 
     public Optional<Identifier> getOverlayId(final ItemStack stack) {
         return triggers.entrySet().stream().filter(e -> e.getKey().test(stack)).map(Map.Entry::getValue).findFirst();
@@ -66,8 +68,6 @@ public class OverlayDataListener implements SimpleResourceReloadListener<Collect
             }
         }, executor);
     }
-
-    private final Identifier id = META.id("data/overlay");
 
     @Override
     public Identifier getFabricId() {

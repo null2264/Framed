@@ -1,5 +1,6 @@
 package io.github.null2264.framed.block.entity;
 
+import com.mojang.datafixers.util.Pair;
 import io.github.null2264.framed.block.frame.data.FrameData;
 import io.github.null2264.framed.block.frame.data.Sections;
 import io.github.null2264.framed.gui.FrameGuiDescription;
@@ -25,7 +26,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
@@ -37,7 +37,8 @@ import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 import static io.github.null2264.framed.util.GetItemBeforeEmptyUtil.getItemBeforeEmpty;
 import static io.github.null2264.framed.util.ValidQuery.checkIf;
 
-public class FrameBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory, RenderAttachmentBlockEntity, BlockEntityClientSerializable {
+public class FrameBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory, RenderAttachmentBlockEntity, BlockEntityClientSerializable
+{
     private FrameData data;
 
     public FrameBlockEntity(final BlockEntityType<?> type, final Sections sections) {
@@ -96,30 +97,30 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
     @Override
     public boolean isValid(final int slot, final ItemStack stack) {
         switch (sections().findSectionIndexOf(slot)) {
-        case Sections.BASE_INDEX:
-            return checkIf(stack).isValidForBase(s -> Optional.of(s.getBlock().getDefaultState()), world, pos).isPresent();
-        case Sections.OVERLAY_INDEX:
-            return checkIf(stack).isValidForOverlay();
-        case Sections.SPECIAL_INDEX:
-            return checkIf(stack).isValidForSpecial();
-        default:
-            return false;
+            case Sections.BASE_INDEX:
+                return checkIf(stack).isValidForBase(s -> Optional.of(s.getBlock().getDefaultState()), world, pos).isPresent();
+            case Sections.OVERLAY_INDEX:
+                return checkIf(stack).isValidForOverlay();
+            case Sections.SPECIAL_INDEX:
+                return checkIf(stack).isValidForSpecial();
+            default:
+                return false;
         }
     }
 
     private void beforeRemove(final int slot) {
         switch (sections().findSectionIndexOf(slot)) {
-        case Sections.BASE_INDEX:
-            baseStates()[sections().base().makeRelative(slot)] = Optional.empty();
-            break;
-        case Sections.OVERLAY_INDEX:
-            break;
-        case Sections.SPECIAL_INDEX:
-            //noinspection ConstantConditions
-            SPECIAL_ITEMS.MAP.get(getItemBeforeEmpty(getStack(slot))).onRemove(world, this);
-            break;
-        default:
-            throw new IllegalArgumentException("Invalid slot: " + slot);
+            case Sections.BASE_INDEX:
+                baseStates()[sections().base().makeRelative(slot)] = Optional.empty();
+                break;
+            case Sections.OVERLAY_INDEX:
+                break;
+            case Sections.SPECIAL_INDEX:
+                //noinspection ConstantConditions
+                SPECIAL_ITEMS.MAP.get(getItemBeforeEmpty(getStack(slot))).onRemove(world, this);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid slot: " + slot);
         }
     }
 
@@ -193,30 +194,30 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
         };
 
         switch (sectionIndex) {
-        case Sections.BASE_INDEX:
-            setStack.run();
-            final int baseSlot = sections().base().makeRelative(slot);
-            baseStates()[baseSlot] = baseItems().get(baseSlot)
-                .map(ItemStack::getItem)
-                .filter(i -> i instanceof BlockItem)
-                .map(i -> ((BlockItem) i).getBlock().getDefaultState());
-            break;
-        case Sections.SPECIAL_INDEX:
-            final SpecialItems.SpecialItem old = SPECIAL_ITEMS.MAP.get(getItemBeforeEmpty(getStack(slot)));
-            if (old != null && world != null) {
-                old.onRemove(world, this);
-            }
+            case Sections.BASE_INDEX:
+                setStack.run();
+                final int baseSlot = sections().base().makeRelative(slot);
+                baseStates()[baseSlot] = baseItems().get(baseSlot)
+                    .map(ItemStack::getItem)
+                    .filter(i -> i instanceof BlockItem)
+                    .map(i -> ((BlockItem) i).getBlock().getDefaultState());
+                break;
+            case Sections.SPECIAL_INDEX:
+                final SpecialItems.SpecialItem old = SPECIAL_ITEMS.MAP.get(getItemBeforeEmpty(getStack(slot)));
+                if (old != null && world != null) {
+                    old.onRemove(world, this);
+                }
 
-            setStack.run();
+                setStack.run();
 
-            final SpecialItems.SpecialItem _new = SPECIAL_ITEMS.MAP.get(getStack(slot).getItem());
-            if (_new != null && world != null) {
-                _new.onAdd(world, this);
-            }
-            break;
-        default:
-            setStack.run();
-            break;
+                final SpecialItems.SpecialItem _new = SPECIAL_ITEMS.MAP.get(getStack(slot).getItem());
+                if (_new != null && world != null) {
+                    _new.onAdd(world, this);
+                }
+                break;
+            default:
+                setStack.run();
+                break;
         }
     }
 

@@ -12,10 +12,20 @@ import java.util.stream.IntStream;
 
 import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 
-public class Sections {
+public class Sections
+{
     public static final int BASE_INDEX = 0;
     public static final int OVERLAY_INDEX = 1;
     public static final int SPECIAL_INDEX = 2;
+    private final Section[] sections;
+
+    public Sections(final Section[] sections) {
+        this.sections = sections;
+    }
+
+    public Sections(final int partCount, final int... otherSizes) {
+        this(makeSections(IntStream.concat(IntStream.of(partCount, partCount, SPECIAL_ITEMS.MAP.size()), Arrays.stream(otherSizes))));
+    }
 
     public static Sections fromTag(final ListTag tag) {
         return new Sections(makeSections(tag.stream().mapToInt(t -> ((IntTag) t).getInt())));
@@ -31,16 +41,6 @@ public class Sections {
             start += size;
         }
         return sections;
-    }
-
-    private final Section[] sections;
-
-    public Sections(final Section[] sections) {
-        this.sections = sections;
-    }
-
-    public Sections(final int partCount, final int... otherSizes) {
-        this(makeSections(IntStream.concat(IntStream.of(partCount, partCount, SPECIAL_ITEMS.MAP.size()), Arrays.stream(otherSizes))));
     }
 
     public Section get(final int index) {

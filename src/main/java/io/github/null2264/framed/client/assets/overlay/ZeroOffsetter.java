@@ -7,7 +7,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class ZeroOffsetter implements Offsetter, ToOptional.Some<Offsetter> {
+public class ZeroOffsetter implements Offsetter, ToOptional.Some<Offsetter>
+{
     private final Identifier id;
 
     public ZeroOffsetter(final Identifier id) {

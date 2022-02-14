@@ -6,7 +6,8 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
 
-public class Framed implements ModInitializer {
+public class Framed implements ModInitializer
+{
     public static FramedProperties PROPERTIES;
     public static SpecialItems SPECIAL_ITEMS;
 

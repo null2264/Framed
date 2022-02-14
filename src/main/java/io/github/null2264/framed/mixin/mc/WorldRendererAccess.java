@@ -36,7 +36,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(WorldRenderer.class)
 @Environment(EnvType.CLIENT)
-public interface WorldRendererAccess {
+public interface WorldRendererAccess
+{
     @Accessor("ticks")
     int ticks();
 }

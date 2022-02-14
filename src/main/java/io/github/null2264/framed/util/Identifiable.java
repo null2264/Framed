@@ -2,7 +2,8 @@ package io.github.null2264.framed.util;
 
 import net.minecraft.util.Identifier;
 
-public class Identifiable<A> {
+public class Identifiable<A>
+{
     private final A value;
     private final Identifier id;
 

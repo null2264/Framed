@@ -16,8 +16,28 @@ import java.util.stream.IntStream;
 
 import static io.github.null2264.framed.Framed.PROPERTIES;
 
-public class SpecialItems {
-    public static class SpecialItem {
+public class SpecialItems
+{
+    public final Map<Item, SpecialItem> MAP;
+
+    public SpecialItems() {
+        final List<Pair<Item, BooleanProperty>> pairs = Lists.newArrayList(
+            Pair.of(Items.GLOWSTONE_DUST, Properties.LIT),
+            Pair.of(Items.REDSTONE, PROPERTIES.HAS_REDSTONE)
+        );
+
+        //noinspection UnstableApiUsage
+        MAP = Streams.zip(
+                IntStream.range(0, pairs.size()).boxed(),
+                pairs.stream(),
+                Pair::new
+            )
+            .map(pair -> new Pair<>(pair.getSecond().getFirst(), new SpecialItem(pair.getFirst(), pair.getSecond().getSecond())))
+            .collect(Pair.toMap());
+    }
+
+    public static class SpecialItem
+    {
         private final int offset;
         private final BooleanProperty property;
 
@@ -37,23 +57,5 @@ public class SpecialItems {
         public void onRemove(final World world, final FrameBlockEntity frame) {
             world.setBlockState(frame.getPos(), world.getBlockState(frame.getPos()).with(property, false));
         }
-    }
-
-    public final Map<Item, SpecialItem> MAP;
-
-    public SpecialItems() {
-        final List<Pair<Item, BooleanProperty>> pairs = Lists.newArrayList(
-            Pair.of(Items.GLOWSTONE_DUST, Properties.LIT),
-            Pair.of(Items.REDSTONE, PROPERTIES.HAS_REDSTONE)
-        );
-
-        //noinspection UnstableApiUsage
-        MAP = Streams.zip(
-            IntStream.range(0, pairs.size()).boxed(),
-            pairs.stream(),
-            Pair::new
-        )
-            .map(pair -> new Pair<>(pair.getSecond().getFirst(), new SpecialItem(pair.getFirst(), pair.getSecond().getSecond())))
-            .collect(Pair.toMap());
     }
 }

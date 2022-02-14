@@ -1,11 +1,11 @@
 package io.github.null2264.framed.client.transform;
 
 import com.mojang.datafixers.util.Pair;
+import grondag.jmx.api.QuadTransformRegistry;
 import io.github.null2264.framed.block.FrameSlotInfo;
 import io.github.null2264.framed.block.frame.data.FrameData;
 import io.github.null2264.framed.client.assets.overlay.Overlay;
 import io.github.null2264.framed.util.Float4;
-import grondag.jmx.api.QuadTransformRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -30,11 +30,14 @@ import java.util.stream.IntStream;
 import static io.github.null2264.framed.Framed.META;
 import static io.github.null2264.framed.client.FramedClient.CLIENT_OVERLAYS;
 import static io.github.null2264.framed.client.util.QuadUtil.calcCenter;
-import static io.github.null2264.framed.util.FunctionalUtil.*;
+import static io.github.null2264.framed.util.FunctionalUtil.flatMapToInt;
+import static io.github.null2264.framed.util.FunctionalUtil.mapToInt;
 
 @Environment(EnvType.CLIENT)
-public final class FrameTransform implements RenderContext.QuadTransform {
-    public static final QuadTransformRegistry.QuadTransformSource SOURCE = new QuadTransformRegistry.QuadTransformSource() {
+public final class FrameTransform implements RenderContext.QuadTransform
+{
+    public static final QuadTransformRegistry.QuadTransformSource SOURCE = new QuadTransformRegistry.QuadTransformSource()
+    {
         @Override
         public RenderContext.QuadTransform getForBlock(final BlockRenderView brv, final BlockState state, final BlockPos pos, final Supplier<Random> randomSupplier) {
             return new FrameTransform(brv, state, pos, randomSupplier);
@@ -57,75 +60,6 @@ public final class FrameTransform implements RenderContext.QuadTransform {
     };
 
     private final EnumMap<Direction, Integer> transformedCount = new EnumMap<>(Direction.class);
-
-    @Override
-    public boolean transform(final MutableQuadView mqv) {
-        if (mqv.tag() == 0) {
-            return true;
-        }
-
-        final Direction dir = mqv.lightFace();
-
-        final int quadIndex = transformedCount.computeIfAbsent(dir, d -> 0);
-        transformedCount.put(dir, quadIndex + 1);
-
-        final int partIndex = getPartIndex(mqv, dir);
-
-        final Data data = this.data[partIndex];
-
-        final Pair<Float4, Float4> origUvs = getUvs(mqv, dir);
-
-        if (mqv.tag() == 1) {
-            TransformResult result = data.baseApplier.apply(mqv, dir, quadIndex, origUvs.getFirst(), origUvs.getSecond(), data.baseColor);
-            // render quad even when NOTHING_TO_DO so that regular frame texture shows
-            switch (result.status) {
-            case DID_SOMETHING:
-            case NOTHING_TO_DO:
-                return true;
-            case FAILED:
-                META.LOGGER.warn("An error occurred with a frame: " + result.message);
-                return false;
-            }
-        } else if (mqv.tag() == 2) {
-            TransformResult result = data.overlay.match(
-                overlay -> {
-                    data.overlayColorApplier.apply(mqv);
-                    return overlay.apply(mqv, origUvs.getFirst(), origUvs.getSecond(), dir);
-                },
-                () -> data.baseApplier.apply(mqv, dir, quadIndex, origUvs.getFirst(), origUvs.getSecond(), data.baseColor)
-            );
-
-            switch (result.status) {
-            case DID_SOMETHING:
-                return true;
-            case FAILED:
-                META.LOGGER.warn("An error occurred with a frame: " + result.message);
-            case NOTHING_TO_DO:
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        META.LOGGER.warn("Somehow FrameTransform::transform didn't return a valid value.");
-        return false;
-    }
-
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private static class Data {
-        public final BaseApplier baseApplier;
-        public final Overlay overlay;
-        public final ColorApplier overlayColorApplier;
-        public final int baseColor;
-
-        public Data(final BaseApplier baseApplier, final Overlay overlay, final OptionalInt maybeCachedOverlayColor, final int baseColor) {
-            this.baseApplier = baseApplier;
-            this.overlay = overlay;
-            this.overlayColorApplier = ColorApplier.ofOptional(maybeCachedOverlayColor);
-            this.baseColor = baseColor;
-        }
-    }
-
     private final FrameSlotInfo slotInfo;
     private final Data[] data;
 
@@ -163,7 +97,6 @@ public final class FrameTransform implements RenderContext.QuadTransform {
             return new Data(baseApplier, overlay, cachedOverlayColor, color);
         }).toArray(Data[]::new);
     }
-
     private FrameTransform(final FrameSlotInfo slotInfo, final FrameData frameData, final Supplier<Random> randomSupplier) {
         //noinspection ConstantConditions // player cannot be null while rendering, stack must have tag or this constructor will not run
         this(
@@ -186,6 +119,59 @@ public final class FrameTransform implements RenderContext.QuadTransform {
         );
     }
 
+    @Override
+    public boolean transform(final MutableQuadView mqv) {
+        if (mqv.tag() == 0) {
+            return true;
+        }
+
+        final Direction dir = mqv.lightFace();
+
+        final int quadIndex = transformedCount.computeIfAbsent(dir, d -> 0);
+        transformedCount.put(dir, quadIndex + 1);
+
+        final int partIndex = getPartIndex(mqv, dir);
+
+        final Data data = this.data[partIndex];
+
+        final Pair<Float4, Float4> origUvs = getUvs(mqv, dir);
+
+        if (mqv.tag() == 1) {
+            TransformResult result = data.baseApplier.apply(mqv, dir, quadIndex, origUvs.getFirst(), origUvs.getSecond(), data.baseColor);
+            // render quad even when NOTHING_TO_DO so that regular frame texture shows
+            switch (result.status) {
+                case DID_SOMETHING:
+                case NOTHING_TO_DO:
+                    return true;
+                case FAILED:
+                    META.LOGGER.warn("An error occurred with a frame: " + result.message);
+                    return false;
+            }
+        } else if (mqv.tag() == 2) {
+            TransformResult result = data.overlay.match(
+                overlay -> {
+                    data.overlayColorApplier.apply(mqv);
+                    return overlay.apply(mqv, origUvs.getFirst(), origUvs.getSecond(), dir);
+                },
+                () -> data.baseApplier.apply(mqv, dir, quadIndex, origUvs.getFirst(), origUvs.getSecond(), data.baseColor)
+            );
+
+            switch (result.status) {
+                case DID_SOMETHING:
+                    return true;
+                case FAILED:
+                    META.LOGGER.warn("An error occurred with a frame: " + result.message);
+                case NOTHING_TO_DO:
+                    return false;
+            }
+        } else {
+            return false;
+        }
+
+        META.LOGGER.warn("Somehow FrameTransform::transform didn't return a valid value.");
+        return false;
+    }
+
     protected int getPartIndex(final MutableQuadView mqv, final Direction dir) {
         return slotInfo.getRelativeSlotAt(
             new Vec3d(
@@ -201,38 +187,54 @@ public final class FrameTransform implements RenderContext.QuadTransform {
         final IntStream us = IntStream.rangeClosed(0, 3);
         final IntStream vs = IntStream.rangeClosed(0, 3);
         switch (dir) {
-        case DOWN:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0, 1)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.z(i), 0, 1)).iterator())
-            );
-        case UP:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0, 1)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> MathHelper.clamp(mqv.z(i), 0, 1)).iterator())
-            );
-        case NORTH:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> 1 - MathHelper.clamp(mqv.x(i), 0f, 1f)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
-            );
-        case SOUTH:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0f, 1f)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
-            );
-        case EAST:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> 1 - MathHelper.clamp(mqv.z(i), 0f, 1f)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
-            );
-        case WEST:
-            return Pair.of(
-                Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.z(i), 0f, 1f)).iterator()),
-                Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
-            );
-        default:
-            throw new IllegalArgumentException("Invalid direction: " + dir);
+            case DOWN:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0, 1)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.z(i), 0, 1)).iterator())
+                );
+            case UP:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0, 1)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> MathHelper.clamp(mqv.z(i), 0, 1)).iterator())
+                );
+            case NORTH:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> 1 - MathHelper.clamp(mqv.x(i), 0f, 1f)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
+                );
+            case SOUTH:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.x(i), 0f, 1f)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
+                );
+            case EAST:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> 1 - MathHelper.clamp(mqv.z(i), 0f, 1f)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
+                );
+            case WEST:
+                return Pair.of(
+                    Float4.fromIterator(us.mapToDouble(i -> MathHelper.clamp(mqv.z(i), 0f, 1f)).iterator()),
+                    Float4.fromIterator(vs.mapToDouble(i -> 1 - MathHelper.clamp(mqv.y(i), 0f, 1f)).iterator())
+                );
+            default:
+                throw new IllegalArgumentException("Invalid direction: " + dir);
+        }
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private static class Data
+    {
+        public final BaseApplier baseApplier;
+        public final Overlay overlay;
+        public final ColorApplier overlayColorApplier;
+        public final int baseColor;
+
+        public Data(final BaseApplier baseApplier, final Overlay overlay, final OptionalInt maybeCachedOverlayColor, final int baseColor) {
+            this.baseApplier = baseApplier;
+            this.overlay = overlay;
+            this.overlayColorApplier = ColorApplier.ofOptional(maybeCachedOverlayColor);
+            this.baseColor = baseColor;
         }
     }
 }

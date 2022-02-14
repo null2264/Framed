@@ -12,19 +12,10 @@ import net.minecraft.util.math.MathHelper;
 import javax.annotation.Nullable;
 
 @Environment(EnvType.CLIENT)
-public abstract class SpriteApplier {
-    public static SpriteApplier ofNullable(@Nullable final Sprite toApply) {
-        if (toApply != null) {
-            return new Some(toApply);
-        } else {
-            return NONE;
-        }
-    }
-
-    public abstract TransformResult apply(MutableQuadView mqv, Float4 us, Float4 vs);
-    public abstract Identifier id();
-
-    public static final SpriteApplier NONE = new SpriteApplier() {
+public abstract class SpriteApplier
+{
+    public static final SpriteApplier NONE = new SpriteApplier()
+    {
         @Override
         public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs) {
             return TransformResult.NOTHING_TO_DO;
@@ -36,7 +27,20 @@ public abstract class SpriteApplier {
         }
     };
 
-    public static class Some extends SpriteApplier {
+    public static SpriteApplier ofNullable(@Nullable final Sprite toApply) {
+        if (toApply != null) {
+            return new Some(toApply);
+        } else {
+            return NONE;
+        }
+    }
+
+    public abstract TransformResult apply(MutableQuadView mqv, Float4 us, Float4 vs);
+
+    public abstract Identifier id();
+
+    public static class Some extends SpriteApplier
+    {
         private final Sprite toApply;
 
         public Some(final Sprite toApply) {

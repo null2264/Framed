@@ -26,151 +26,10 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class FramersHammer extends Item {
+public class FramersHammer extends Item
+{
     public FramersHammer(final Settings settings) {
         super(settings);
-    }
-
-    public enum CopyMode {
-        NONE(0, "none"), ANY(1, "any"), REQUIRE_ALL(2, "require_all");
-
-        public final int id;
-        public final String translationKey;
-
-        CopyMode(final int id, final String translationKey) {
-            this.id = id;
-            this.translationKey = translationKey;
-        }
-
-        public CopyMode next() {
-            return CopyMode.values()[(id + 1) % CopyMode.values().length];
-        }
-
-        public static final CopyMode DEFAULT = NONE;
-
-        public static Optional<CopyMode> fromString(final String string) {
-            return Arrays.stream(values()).filter(s -> s.translationKey.equals(string)).findFirst();
-        }
-
-        public static CopyMode fromStringOrDefault(final String string) {
-            return fromString(string).orElse(DEFAULT);
-        }
-    }
-
-    public static class Data {
-        public static Data fromTag(final CompoundTag tag) {
-            return new Data(
-                tag.contains("storedData")
-                    ? FrameData.fromTag(tag.getCompound("storedData"))
-                    : null,
-                (tag.contains("mode")
-                    ? CopyMode.fromString(tag.getString("mode"))
-                    : Optional.<CopyMode>empty()
-                ).orElse(CopyMode.DEFAULT)
-            );
-        }
-
-        private final @Nullable
-        FrameData storedData;
-        private final CopyMode mode;
-
-        public Data(@Nullable final FrameData storedData, final CopyMode mode) {
-            this.storedData = storedData;
-            this.mode = mode;
-        }
-
-        public boolean applySettings(final FrameSlotInfo slotInfo, final BlockState state, final FrameBlockEntity frame, final PlayerEntity player, final World world) {
-            final FrameData storedData = this.storedData;
-            if (storedData == null) {
-                return false;
-            }
-
-            if (!storedData.sections().equals(frame.sections())) {
-                player.sendMessage(new TranslatableText("gui.framed.framers_hammer.different_format"), true);
-                return false;
-            }
-
-            if (player.isCreative()) {
-                if (mode == CopyMode.NONE) {
-                    return false;
-                }
-
-                if (!world.isClient) {
-                    IntStream.range(0, storedData.items().length)
-                        .boxed()
-                        .map(i -> new Pair<>(storedData.items()[i], i))
-                        .flatMap(pair -> pair.getFirst().map(itemStack -> Stream.of(new Pair<>(itemStack, pair.getSecond()))).orElseGet(Stream::empty))
-                        .forEach(pair -> frame.setStack(pair.getSecond(), pair.getFirst().copy()));
-                }
-            } else {
-                final boolean requireAllItems;
-                switch (mode) {
-                case NONE:
-                    return false;
-                case ANY:
-                    requireAllItems = false;
-                    break;
-                case REQUIRE_ALL:
-                    requireAllItems = true;
-                    break;
-                default:
-                    throw new IllegalStateException("Unreachable.");
-                }
-
-                final Map<Item, Integer> itemSlotToFrameSlot = IntStream.range(0, storedData.items().length)
-                    .boxed()
-                    .map(i -> new Pair<>(storedData.items()[i], i))
-                    .flatMap(pair -> {
-                        if (pair.getFirst().isPresent()) {
-                            //noinspection OptionalGetWithoutIsPresent
-                            return Stream.of(pair.mapFirst(stack -> stack.get().getItem()));
-                        } else {
-                            return Stream.empty();
-                        }
-                    })
-                    .collect(Pair.toMap());
-
-                final Map<Integer, Integer> playerSlotToFrameSlot = IntStream.range(0, player.inventory.size())
-                    .boxed()
-                    .map(i -> new Pair<>(Optional.of(player.inventory.getStack(i)).filter(s -> !s.isEmpty()), i))
-                    .flatMap(pair -> {
-                        final Optional<ItemStack> maybeStack = pair.getFirst();
-                        if (maybeStack.isPresent()) {
-                            final Item item = maybeStack.get().getItem();
-                            if (itemSlotToFrameSlot.containsKey(item)) {
-                                return Stream.of(new Pair<>(pair.getSecond(), itemSlotToFrameSlot.get(item)));
-                            } else {
-                                return Stream.empty();
-                            }
-                        } else {
-                            return Stream.empty();
-                        }
-                    })
-                    .collect(Pair.toMap());
-
-                if (requireAllItems && playerSlotToFrameSlot.size() != Arrays.stream(storedData.items()).filter(Optional::isPresent).count()) {
-                    return false;
-                }
-
-                if (!world.isClient) {
-                    for (final Map.Entry<Integer, Integer> entry : playerSlotToFrameSlot.entrySet()) {
-                        final int playerSlot = entry.getKey();
-                        final int frameSlot = entry.getValue();
-
-                        if (frame.getStack(frameSlot).getItem() != player.inventory.getStack(playerSlot).getItem() && slotInfo.absoluteSlotIsValid(frame, state, frameSlot)) {
-                            if (!frame.getStack(frameSlot).isEmpty()) {
-                                player.inventory.offerOrDrop(world, frame.removeStack(frameSlot));
-                            }
-                            frame.setStack(frameSlot, player.inventory.removeStack(playerSlot, 1));
-                        }
-                    }
-                }
-            }
-
-            player.sendMessage(new TranslatableText("gui.framed.framers_hammer.apply_settings"), true);
-
-            return true;
-        }
     }
 
     private CompoundTag getTagOrAssignDefault(final ItemStack stack) {
@@ -237,5 +96,147 @@ public class FramersHammer extends Item {
         user.sendMessage(new TranslatableText("gui.framed.framers_hammer." + newMode.translationKey), true);
 
         return TypedActionResult.success(stack);
+    }
+
+    public enum CopyMode
+    {
+        NONE(0, "none"), ANY(1, "any"), REQUIRE_ALL(2, "require_all");
+
+        public static final CopyMode DEFAULT = NONE;
+        public final int id;
+        public final String translationKey;
+
+        CopyMode(final int id, final String translationKey) {
+            this.id = id;
+            this.translationKey = translationKey;
+        }
+
+        public static Optional<CopyMode> fromString(final String string) {
+            return Arrays.stream(values()).filter(s -> s.translationKey.equals(string)).findFirst();
+        }
+
+        public static CopyMode fromStringOrDefault(final String string) {
+            return fromString(string).orElse(DEFAULT);
+        }
+
+        public CopyMode next() {
+            return CopyMode.values()[(id + 1) % CopyMode.values().length];
+        }
+    }
+
+    public static class Data
+    {
+        private final @Nullable
+        FrameData storedData;
+        private final CopyMode mode;
+        public Data(@Nullable final FrameData storedData, final CopyMode mode) {
+            this.storedData = storedData;
+            this.mode = mode;
+        }
+
+        public static Data fromTag(final CompoundTag tag) {
+            return new Data(
+                tag.contains("storedData")
+                    ? FrameData.fromTag(tag.getCompound("storedData"))
+                    : null,
+                (tag.contains("mode")
+                    ? CopyMode.fromString(tag.getString("mode"))
+                    : Optional.<CopyMode>empty()
+                ).orElse(CopyMode.DEFAULT)
+            );
+        }
+
+        public boolean applySettings(final FrameSlotInfo slotInfo, final BlockState state, final FrameBlockEntity frame, final PlayerEntity player, final World world) {
+            final FrameData storedData = this.storedData;
+            if (storedData == null) {
+                return false;
+            }
+
+            if (!storedData.sections().equals(frame.sections())) {
+                player.sendMessage(new TranslatableText("gui.framed.framers_hammer.different_format"), true);
+                return false;
+            }
+
+            if (player.isCreative()) {
+                if (mode == CopyMode.NONE) {
+                    return false;
+                }
+
+                if (!world.isClient) {
+                    IntStream.range(0, storedData.items().length)
+                        .boxed()
+                        .map(i -> new Pair<>(storedData.items()[i], i))
+                        .flatMap(pair -> pair.getFirst().map(itemStack -> Stream.of(new Pair<>(itemStack, pair.getSecond()))).orElseGet(Stream::empty))
+                        .forEach(pair -> frame.setStack(pair.getSecond(), pair.getFirst().copy()));
+                }
+            } else {
+                final boolean requireAllItems;
+                switch (mode) {
+                    case NONE:
+                        return false;
+                    case ANY:
+                        requireAllItems = false;
+                        break;
+                    case REQUIRE_ALL:
+                        requireAllItems = true;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unreachable.");
+                }
+
+                final Map<Item, Integer> itemSlotToFrameSlot = IntStream.range(0, storedData.items().length)
+                    .boxed()
+                    .map(i -> new Pair<>(storedData.items()[i], i))
+                    .flatMap(pair -> {
+                        if (pair.getFirst().isPresent()) {
+                            //noinspection OptionalGetWithoutIsPresent
+                            return Stream.of(pair.mapFirst(stack -> stack.get().getItem()));
+                        } else {
+                            return Stream.empty();
+                        }
+                    })
+                    .collect(Pair.toMap());
+
+                final Map<Integer, Integer> playerSlotToFrameSlot = IntStream.range(0, player.inventory.size())
+                    .boxed()
+                    .map(i -> new Pair<>(Optional.of(player.inventory.getStack(i)).filter(s -> !s.isEmpty()), i))
+                    .flatMap(pair -> {
+                        final Optional<ItemStack> maybeStack = pair.getFirst();
+                        if (maybeStack.isPresent()) {
+                            final Item item = maybeStack.get().getItem();
+                            if (itemSlotToFrameSlot.containsKey(item)) {
+                                return Stream.of(new Pair<>(pair.getSecond(), itemSlotToFrameSlot.get(item)));
+                            } else {
+                                return Stream.empty();
+                            }
+                        } else {
+                            return Stream.empty();
+                        }
+                    })
+                    .collect(Pair.toMap());
+
+                if (requireAllItems && playerSlotToFrameSlot.size() != Arrays.stream(storedData.items()).filter(Optional::isPresent).count()) {
+                    return false;
+                }
+
+                if (!world.isClient) {
+                    for (final Map.Entry<Integer, Integer> entry : playerSlotToFrameSlot.entrySet()) {
+                        final int playerSlot = entry.getKey();
+                        final int frameSlot = entry.getValue();
+
+                        if (frame.getStack(frameSlot).getItem() != player.inventory.getStack(playerSlot).getItem() && slotInfo.absoluteSlotIsValid(frame, state, frameSlot)) {
+                            if (!frame.getStack(frameSlot).isEmpty()) {
+                                player.inventory.offerOrDrop(world, frame.removeStack(frameSlot));
+                            }
+                            frame.setStack(frameSlot, player.inventory.removeStack(playerSlot, 1));
+                        }
+                    }
+                }
+            }
+
+            player.sendMessage(new TranslatableText("gui.framed.framers_hammer.apply_settings"), true);
+
+            return true;
+        }
     }
 }

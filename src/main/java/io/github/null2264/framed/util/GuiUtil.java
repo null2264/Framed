@@ -8,7 +8,8 @@ import io.github.cottonmc.cotton.gui.widget.data.VerticalAlignment;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.text.TranslatableText;
 
-public enum GuiUtil {
+public enum GuiUtil
+{
     ;
 
     public static WLabel label(final String translationKey) {

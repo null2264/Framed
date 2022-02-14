@@ -18,7 +18,21 @@ import java.util.stream.Collectors;
 
 import static io.github.null2264.framed.Framed.OVERLAYS;
 
-public class FrameData {
+public class FrameData
+{
+    private final Sections sections;
+    private final Optional<ItemStack>[] items;
+    private final Optional<BlockState>[] baseStates;
+
+    public FrameData(final Sections sections, final Optional<ItemStack>[] items, final Optional<BlockState>[] baseStates) {
+        this.sections = sections;
+        this.items = items;
+        this.baseStates = baseStates;
+    }
+    public FrameData(@Nonnull final Sections sections) {
+        this(sections, sections.makeItems(), sections.makeBaseStates());
+    }
+
     private static Optional<ItemStack>[] itemsFromTag(final Sections sections, final ListTag tag) {
         final Optional<ItemStack>[] items = sections.makeItems();
 
@@ -53,20 +67,6 @@ public class FrameData {
             itemsFromTag(sections, tag.getList("Items", 10)),
             baseStatesFromTag(sections, tag.getList("states", 10))
         );
-    }
-
-    private final Sections sections;
-    private final Optional<ItemStack>[] items;
-    private final Optional<BlockState>[] baseStates;
-
-    public FrameData(final Sections sections, final Optional<ItemStack>[] items, final Optional<BlockState>[] baseStates) {
-        this.sections = sections;
-        this.items = items;
-        this.baseStates = baseStates;
-    }
-
-    public FrameData(@Nonnull final Sections sections) {
-        this(sections, sections.makeItems(), sections.makeBaseStates());
     }
 
     public Sections sections() {
@@ -104,7 +104,7 @@ public class FrameData {
             items[i].ifPresent(stack -> {
                 final CompoundTag stackTag = new CompoundTag();
                 stack.toTag(stackTag);
-                stackTag.putByte("Slot", (byte)i2);
+                stackTag.putByte("Slot", (byte) i2);
                 itemsTag.add(stackTag);
             });
         }

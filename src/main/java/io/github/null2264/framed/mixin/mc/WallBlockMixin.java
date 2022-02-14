@@ -19,14 +19,23 @@ import java.util.Map;
 import static net.minecraft.block.WallBlock.NORTH_SHAPE;
 
 @Mixin(WallBlock.class)
-public class WallBlockMixin extends Block {
-    @Shadow @Final public static BooleanProperty UP;
+public class WallBlockMixin extends Block
+{
+    @Shadow
+    @Final
+    public static BooleanProperty UP;
 
-    @Shadow @Final public static EnumProperty<WallShape> EAST_SHAPE;
+    @Shadow
+    @Final
+    public static EnumProperty<WallShape> EAST_SHAPE;
 
-    @Shadow @Final public static EnumProperty<WallShape> WEST_SHAPE;
+    @Shadow
+    @Final
+    public static EnumProperty<WallShape> WEST_SHAPE;
 
-    @Shadow @Final public static EnumProperty<WallShape> SOUTH_SHAPE;
+    @Shadow
+    @Final
+    public static EnumProperty<WallShape> SOUTH_SHAPE;
 
     @SuppressWarnings("unused")
     public WallBlockMixin(Settings settings) {

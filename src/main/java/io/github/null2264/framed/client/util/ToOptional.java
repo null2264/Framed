@@ -8,11 +8,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public interface ToOptional<O extends ToOptional<O>> {
+public interface ToOptional<O extends ToOptional<O>>
+{
     Optional<O> toOptional();
+
     <T> T match(Function<O, T> some, Supplier<T> none);
 
-    interface Some<O extends ToOptional<O>> extends ToOptional<O> {
+    interface Some<O extends ToOptional<O>> extends ToOptional<O>
+    {
         default Optional<O> toOptional() {
             //noinspection unchecked
             return Optional.of((O) this);

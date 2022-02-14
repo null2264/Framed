@@ -24,8 +24,10 @@ import java.util.concurrent.Executor;
 import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
-public class OverlayAssetListener implements SimpleResourceReloadListener<Collection<Identifier>> {
+public class OverlayAssetListener implements SimpleResourceReloadListener<Collection<Identifier>>
+{
     private final Map<Identifier, Overlay.Some> overlayInfoMap = new HashMap<>();
+    private final Identifier id = META.id("assets/overlay");
 
     public Overlay getOverlayFor(final Identifier id) {
         return Overlay.ofNullable(overlayInfoMap.get(id));
@@ -55,7 +57,7 @@ public class OverlayAssetListener implements SimpleResourceReloadListener<Collec
         try {
             element = new Gson().fromJson(new BufferedReader(new InputStreamReader(resourceManager.getResource(overlayId).getInputStream())), JsonElement.class);
         } catch (final IOException e) {
-            return DataResult.error("Exception while loading an overlay: " );
+            return DataResult.error("Exception while loading an overlay: ");
         }
 
         final DataResult<Pair<Overlay.Some, JsonElement>> result = Overlay.Some.PARENT_CODEC.decode(JsonOps.INSTANCE, element)
@@ -89,8 +91,6 @@ public class OverlayAssetListener implements SimpleResourceReloadListener<Collec
             }
         }, executor);
     }
-
-    private final Identifier id = META.id("assets/overlay");
 
     @Override
     public Identifier getFabricId() {

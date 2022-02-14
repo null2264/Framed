@@ -21,12 +21,14 @@ import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
-public abstract class ItemRendererMixin {
+public abstract class ItemRendererMixin
+{
     @Final
     @Shadow
     private ItemModels models;
 
-    @Shadow public abstract BakedModel getHeldItemModel(ItemStack stack, World world, LivingEntity entity);
+    @Shadow
+    public abstract BakedModel getHeldItemModel(ItemStack stack, World world, LivingEntity entity);
 
     @Redirect(method = "getHeldItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemModels;getModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/render/model/BakedModel;"))
     BakedModel getModelProxy(final ItemModels itemModels, final ItemStack stack) {

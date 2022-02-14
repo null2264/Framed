@@ -11,22 +11,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public abstract class ColorApplier implements ToOptional<ColorApplier> {
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static ColorApplier ofOptional(final OptionalInt optional) {
-        if (optional.isPresent()) {
-            return new Some(optional.getAsInt());
-        } else {
-            return NONE;
-        }
-    }
-
-    public abstract void apply(MutableQuadView mqv);
-
+public abstract class ColorApplier implements ToOptional<ColorApplier>
+{
     @SuppressWarnings("java:S1186")
-    public static final ColorApplier NONE = new ColorApplier() {
+    public static final ColorApplier NONE = new ColorApplier()
+    {
         @Override
-        public void apply(final MutableQuadView mqv) { }
+        public void apply(final MutableQuadView mqv) {
+        }
 
         @Override
         public Optional<ColorApplier> toOptional() {
@@ -39,7 +31,19 @@ public abstract class ColorApplier implements ToOptional<ColorApplier> {
         }
     };
 
-    public static class Some extends ColorApplier implements ToOptional.Some<ColorApplier> {
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public static ColorApplier ofOptional(final OptionalInt optional) {
+        if (optional.isPresent()) {
+            return new Some(optional.getAsInt());
+        } else {
+            return NONE;
+        }
+    }
+
+    public abstract void apply(MutableQuadView mqv);
+
+    public static class Some extends ColorApplier implements ToOptional.Some<ColorApplier>
+    {
         private final int color;
 
         public Some(final int color) {

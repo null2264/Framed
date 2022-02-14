@@ -15,12 +15,11 @@ import java.util.function.Supplier;
 import static io.github.null2264.framed.client.FramedClient.CODECS;
 
 @Environment(EnvType.CLIENT)
-public abstract class SidedOffsetters {
-    private SidedOffsetters() { }
-
+public abstract class SidedOffsetters
+{
     public static final Codec<SidedOffsetters.Base> CODEC = Some.CODEC.xmap(some -> some, base -> (Some) base);
-
-    public static final Base NONE = new Base() {
+    public static final Base NONE = new Base()
+    {
         @Override
         public Optional<Base> toOptional() {
             return Optional.empty();
@@ -42,12 +41,18 @@ public abstract class SidedOffsetters {
         }
     };
 
-    public interface Base extends ToOptional<Base> {
+    private SidedOffsetters() {
+    }
+
+    public interface Base extends ToOptional<Base>
+    {
         Float4 applyUs(Float4 origUs, Direction dir);
+
         Float4 applyVs(Float4 origVs, Direction dir);
     }
 
-    public static class Some implements Base, ToOptional.Some<Base> {
+    public static class Some implements Base, ToOptional.Some<Base>
+    {
         public static final Codec<SidedOffsetters.Some> CODEC = CODECS.sidedMapOf(Offsetters.CODEC).xmap(SidedOffsetters.Some::new, so -> so.map);
 
         private final Map<Direction, Offsetters> map;

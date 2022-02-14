@@ -28,13 +28,73 @@ import java.util.function.Supplier;
 import static io.github.null2264.framed.client.FramedClient.CODECS;
 
 @Environment(EnvType.CLIENT)
-public abstract class TextureSource implements ToOptional<TextureSource> {
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static class Entry {
-        public final @Nonnull SpriteApplier textureApplier;
-        public final @Nonnull MaterialApplier materialApplier;
+public abstract class TextureSource implements ToOptional<TextureSource>
+{
+    public static final Codec<TextureSource> CODEC = Codec.STRING
+        .flatXmap(TextureSourceKind::fromString, kind -> DataResult.success(kind.toString()))
+        .dispatch(ts -> ts.kind, kind -> {
+            switch (kind) {
+                case SINGLE:
+                    return RecordCodecBuilder.create(inst -> inst.group(
+                        Single.SINGLE_CODEC.fieldOf("value").forGetter(i -> (Single) i)
+                    ).apply(inst, i -> i));
+                case SIDED:
+                    return RecordCodecBuilder.create(inst -> inst.group(
+                        Sided.SIDED_CODEC.fieldOf("value").forGetter(i -> (Sided) i)
+                    ).apply(inst, i -> i));
+                default:
+                    throw new IllegalStateException("Invalid TextureSourceKind: " + kind);
+            }
+        });
+    @SuppressWarnings("ConstantConditions")
+    public static final TextureSource NONE = new TextureSource(null)
+    {
+        @Override
+        public Optional<TextureSource> toOptional() {
+            return Optional.empty();
+        }
 
+        @Override
+        public <T> T match(final Function<TextureSource, T> some, final Supplier<T> none) {
+            return none.get();
+        }
+
+        @Override
+        public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs, final Direction side) {
+            return TransformResult.NOTHING_TO_DO;
+        }
+
+        @Nonnull
+        @Override
+        @SuppressWarnings({"ReturnOfNull", "java:S2637"})
+        protected Entry entryFor(final Direction side) {
+            return null; // OK because apply is overridden => entryFor is never called
+        }
+    };
+    public final TextureSourceKind kind;
+
+    protected TextureSource(final TextureSourceKind kind) {
+        this.kind = kind;
+    }
+
+    public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs, final Direction side) {
+        final Entry entry = entryFor(side);
+
+        entry.materialApplier.apply(mqv);
+        return entry.textureApplier.apply(mqv, us, vs);
+    }
+
+    protected abstract @Nonnull
+    Entry entryFor(final Direction side);
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public static class Entry
+    {
         public static final Entry NONE = new Entry();
+        public final @Nonnull
+        SpriteApplier textureApplier;
+        public final @Nonnull
+        MaterialApplier materialApplier;
 
         private Entry() {
             this.textureApplier = SpriteApplier.NONE;
@@ -52,39 +112,8 @@ public abstract class TextureSource implements ToOptional<TextureSource> {
         }
     }
 
-    public static final Codec<TextureSource> CODEC = Codec.STRING
-        .flatXmap(TextureSourceKind::fromString, kind -> DataResult.success(kind.toString()))
-        .dispatch(ts -> ts.kind, kind -> {
-            switch (kind) {
-            case SINGLE:
-                return RecordCodecBuilder.create(inst -> inst.group(
-                    Single.SINGLE_CODEC.fieldOf("value").forGetter(i -> (Single) i)
-                ).apply(inst, i -> i));
-            case SIDED:
-                return RecordCodecBuilder.create(inst -> inst.group(
-                    Sided.SIDED_CODEC.fieldOf("value").forGetter(i -> (Sided) i)
-                ).apply(inst, i -> i));
-            default:
-                throw new IllegalStateException("Invalid TextureSourceKind: " + kind);
-            }
-        });
-
-    public final TextureSourceKind kind;
-
-    protected TextureSource(final TextureSourceKind kind) {
-        this.kind = kind;
-    }
-
-    public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs, final Direction side) {
-        final Entry entry = entryFor(side);
-
-        entry.materialApplier.apply(mqv);
-        return entry.textureApplier.apply(mqv, us, vs);
-    }
-
-    protected abstract @Nonnull Entry entryFor(final Direction side);
-
-    public static class Single extends TextureSource implements ToOptional.Some<TextureSource> {
+    public static class Single extends TextureSource implements ToOptional.Some<TextureSource>
+    {
         public static final Codec<Single> SINGLE_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Identifier.CODEC.fieldOf("texture").forGetter(s -> s.entry.textureApplier.id()),
             Identifier.CODEC.optionalFieldOf("materialSource").forGetter(s -> s.entry.materialApplier.id())
@@ -106,7 +135,8 @@ public abstract class TextureSource implements ToOptional<TextureSource> {
         }
     }
 
-    public static class Sided extends TextureSource implements ToOptional.Some<TextureSource> {
+    public static class Sided extends TextureSource implements ToOptional.Some<TextureSource>
+    {
         public static final Codec<Sided> SIDED_CODEC;
 
         static {
@@ -142,29 +172,4 @@ public abstract class TextureSource implements ToOptional<TextureSource> {
             return entries.get(side);
         }
     }
-
-    @SuppressWarnings("ConstantConditions")
-    public static final TextureSource NONE = new TextureSource(null) {
-        @Override
-        public Optional<TextureSource> toOptional() {
-            return Optional.empty();
-        }
-
-        @Override
-        public <T> T match(final Function<TextureSource, T> some, final Supplier<T> none) {
-            return none.get();
-        }
-
-        @Override
-        public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs, final Direction side) {
-            return TransformResult.NOTHING_TO_DO;
-        }
-
-        @Nonnull
-        @Override
-        @SuppressWarnings({"ReturnOfNull", "java:S2637"})
-        protected Entry entryFor(final Direction side) {
-            return null; // OK because apply is overridden => entryFor is never called
-        }
-    };
 }

@@ -13,14 +13,11 @@ import java.util.function.Supplier;
 import static io.github.null2264.framed.Framed.META;
 
 @Environment(EnvType.CLIENT)
-public interface Offsetter extends ToOptional<Offsetter> {
-    Float4 offset(Float4 original);
-
-    Identifier getId();
-
+public interface Offsetter extends ToOptional<Offsetter>
+{
     Identifier NONE_ID = META.id("none");
-
-    Offsetter NONE = new Offsetter() {
+    Offsetter NONE = new Offsetter()
+    {
         @Override
         public Optional<Offsetter> toOptional() {
             return Optional.empty();
@@ -41,4 +38,8 @@ public interface Offsetter extends ToOptional<Offsetter> {
             return NONE_ID;
         }
     };
+
+    Float4 offset(Float4 original);
+
+    Identifier getId();
 }

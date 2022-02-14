@@ -15,7 +15,21 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public abstract class MaterialApplier {
+public abstract class MaterialApplier
+{
+    @SuppressWarnings("java:S1186")
+    public static final MaterialApplier NONE = new MaterialApplier()
+    {
+        @Override
+        public void apply(final MutableQuadView mqv) {
+        }
+
+        @Override
+        public Optional<Identifier> id() {
+            return Optional.empty();
+        }
+    };
+
     public static MaterialApplier ofSpriteAndBlockState(@Nonnull final Sprite sprite, @Nullable final BlockState blockState) {
         if (blockState == null) {
             return NONE;
@@ -35,23 +49,16 @@ public abstract class MaterialApplier {
         }
     }
 
-    @SuppressWarnings("java:S1186")
-    public static final MaterialApplier NONE = new MaterialApplier() {
-        @Override
-        public void apply(final MutableQuadView mqv) { }
-
-        @Override
-        public Optional<Identifier> id() {
-            return Optional.empty();
-        }
-    };
-
     public abstract void apply(MutableQuadView mqv);
+
     public abstract Optional<Identifier> id();
 
-    public static class Some extends MaterialApplier {
-        private final @Nonnull Identifier id;
-        private final @Nonnull RenderMaterial toApply;
+    public static class Some extends MaterialApplier
+    {
+        private final @Nonnull
+        Identifier id;
+        private final @Nonnull
+        RenderMaterial toApply;
 
         public Some(final @Nonnull Identifier id, final @Nonnull RenderMaterial toApply) {
             this.id = id;

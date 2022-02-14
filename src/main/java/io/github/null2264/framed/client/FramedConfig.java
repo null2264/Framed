@@ -8,7 +8,8 @@ import dev.inkwell.conrad.api.value.serialization.FlatOwenSerializer;
 import dev.inkwell.owen.OwenElement;
 import org.jetbrains.annotations.NotNull;
 
-public class FramedConfig extends Config<OwenElement> {
+public class FramedConfig extends Config<OwenElement>
+{
     public static final ValueKey<Boolean> SHOW_PLACEMENT_PREVIEW = builder(true)
         .with((oldValue, newValue) -> FramePreviewOutline.enabled = newValue)
         .build();

@@ -3,7 +3,8 @@ package io.github.null2264.framed;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class Registrar<T> {
+public class Registrar<T>
+{
     private final Registry<T> target;
 
     protected Registrar(final Registry<T> target) {

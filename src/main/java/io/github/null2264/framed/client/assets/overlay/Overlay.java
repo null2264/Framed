@@ -20,22 +20,10 @@ import java.util.function.Supplier;
 import static io.github.null2264.framed.client.FramedClient.CLIENT_OVERLAYS;
 
 @Environment(EnvType.CLIENT)
-public abstract class Overlay implements ToOptional<Overlay> {
-    public static Overlay ofNullable(final @Nullable Some some) {
-        if (some == null) {
-            return NONE;
-        } else {
-            return some;
-        }
-    }
-
-    public abstract TransformResult apply(MutableQuadView mqv, Float4 us, Float4 vs, Direction dir);
-
-    public abstract TextureSource textureSource();
-    public abstract Optional<ColoredLike> coloredLike();
-    public abstract SidedOffsetters.Base sidedOffsetters();
-
-    public static final Overlay NONE = new Overlay() {
+public abstract class Overlay implements ToOptional<Overlay>
+{
+    public static final Overlay NONE = new Overlay()
+    {
         @Override
         public TransformResult apply(final MutableQuadView mqv, final Float4 us, final Float4 vs, final Direction dir) {
             return TransformResult.NOTHING_TO_DO;
@@ -67,7 +55,24 @@ public abstract class Overlay implements ToOptional<Overlay> {
         }
     };
 
-    public static class Some extends Overlay implements ToOptional.Some<Overlay> {
+    public static Overlay ofNullable(final @Nullable Some some) {
+        if (some == null) {
+            return NONE;
+        } else {
+            return some;
+        }
+    }
+
+    public abstract TransformResult apply(MutableQuadView mqv, Float4 us, Float4 vs, Direction dir);
+
+    public abstract TextureSource textureSource();
+
+    public abstract Optional<ColoredLike> coloredLike();
+
+    public abstract SidedOffsetters.Base sidedOffsetters();
+
+    public static class Some extends Overlay implements ToOptional.Some<Overlay>
+    {
         public static final Codec<Optional<Identifier>> PARENT_CODEC = RecordCodecBuilder.create(inst -> inst.group(
             Identifier.CODEC.optionalFieldOf("parent").forGetter(i -> i)
         ).apply(inst, i -> i));

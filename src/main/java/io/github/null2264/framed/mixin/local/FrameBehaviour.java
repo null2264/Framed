@@ -40,7 +40,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import static io.github.null2264.framed.Framed.*;
@@ -63,7 +64,12 @@ import static io.github.null2264.framed.util.ValidQuery.checkIf;
     CarpetFrame.class,
     PaneFrame.class
 })
-public abstract class FrameBehaviour extends Block implements BlockEntityProvider, Frame, FrameSlotInfo {
+public abstract class FrameBehaviour extends Block implements BlockEntityProvider, Frame, FrameSlotInfo
+{
+    @Unique
+    @Nullable
+    private PlayerEntity breaker;
+
     @SuppressWarnings("unused") // required by mixin
     private FrameBehaviour(final Settings settings) {
         super(settings);
@@ -77,9 +83,6 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
             .with(PROPERTIES.HAS_REDSTONE, false)
         );
     }
-
-    @Unique @Nullable
-    private PlayerEntity breaker;
 
     @Override
     public void appendProperties(final StateManager.Builder<Block, BlockState> builder) {

@@ -11,7 +11,8 @@ import java.util.Optional;
 import static io.github.null2264.framed.client.FramedClient.CODECS;
 
 @Environment(EnvType.CLIENT)
-public class Offsetters {
+public class Offsetters
+{
     public static final Codec<Offsetters> CODEC = RecordCodecBuilder.create(inst -> inst.group(
         CODECS.OFFSETTER.optionalFieldOf("u").forGetter(o -> o.u.toOptional()),
         CODECS.OFFSETTER.optionalFieldOf("v").forGetter(o -> o.v.toOptional())
@@ -19,8 +20,10 @@ public class Offsetters {
 
     public static final Offsetters NONE = new Offsetters();
 
-    public final @Nonnull Offsetter u;
-    public final @Nonnull Offsetter v;
+    public final @Nonnull
+    Offsetter u;
+    public final @Nonnull
+    Offsetter v;
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public Offsetters(@Nonnull final Optional<Offsetter> u, @Nonnull final Optional<Offsetter> v) {

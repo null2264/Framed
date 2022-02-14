@@ -8,7 +8,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 @Environment(EnvType.CLIENT)
-public class ColoredLike {
+public class ColoredLike
+{
     public static final Codec<ColoredLike> CODEC = Identifier.CODEC
         .xmap(
             id -> Registry.BLOCK.get(id).getDefaultState(),

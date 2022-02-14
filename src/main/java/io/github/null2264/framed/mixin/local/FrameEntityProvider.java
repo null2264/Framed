@@ -28,7 +28,8 @@ import static io.github.null2264.framed.Framed.META;
     CarpetFrame.class,
     PaneFrame.class
 })
-public class FrameEntityProvider implements BlockEntityProvider {
+public class FrameEntityProvider implements BlockEntityProvider
+{
     private FrameEntityProvider() {
         throw new IllegalStateException("Mixin constructor should not run.");
     }

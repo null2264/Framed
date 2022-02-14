@@ -10,10 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Environment(EnvType.CLIENT)
-public class OffsetterRegistry {
-    private OffsetterRegistry() { }
-
+public class OffsetterRegistry
+{
     private static final Map<Identifier, Identifiable<Codec<Offsetter>>> registeredOffsetters = new HashMap<>();
+
+    private OffsetterRegistry() {
+    }
 
     public static void register(final Identifier id, final Codec<Offsetter> codec) {
         registeredOffsetters.put(id, new Identifiable<>(codec, id));

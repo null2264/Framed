@@ -5,7 +5,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
-public class QuadUtil {
+public class QuadUtil
+{
     private QuadUtil() {
         throw new IllegalStateException("Should not instantiate utility class.");
     }

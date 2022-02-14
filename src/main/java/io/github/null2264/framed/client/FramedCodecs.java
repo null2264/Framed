@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class FramedCodecs {
+public class FramedCodecs
+{
     public final Codec<Direction> DIRECTION = Codec.STRING.flatXmap(
         name -> {
             Direction result = Direction.byName(name);

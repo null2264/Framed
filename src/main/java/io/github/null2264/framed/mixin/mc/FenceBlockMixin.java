@@ -10,7 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FenceBlock.class)
-public class FenceBlockMixin {
+public class FenceBlockMixin
+{
     @Inject(method = "canConnect", at = @At("HEAD"), cancellable = true)
     void connectToFenceFrame(final BlockState state, final boolean neighborIsFullSquare, final Direction dir, final CallbackInfoReturnable<Boolean> cir) {
         if (state.isOf(Framed.BLOCKS.FENCE_FRAME)) {

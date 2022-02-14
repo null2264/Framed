@@ -16,7 +16,8 @@ import java.util.function.Function;
 
 import static io.github.null2264.framed.Framed.META;
 
-public class FramedBlocks extends Registrar<Block> {
+public class FramedBlocks extends Registrar<Block>
+{
     public final BlockFrame BLOCK_FRAME;
     public final SlabFrame SLAB_FRAME;
     public final StairsFrame STAIRS_FRAME;
@@ -32,11 +33,6 @@ public class FramedBlocks extends Registrar<Block> {
     public final LayerFrame LAYER_FRAME;
     public final CarpetFrame CARPET_FRAME;
     public final PaneFrame PANE_FRAME;
-
-    private <A extends Block> A registerWithItem(final A block, final Identifier id, final Item.Settings settings) {
-        Registry.register(Registry.ITEM, id, new BlockItem(block, settings));
-        return register(block, id);
-    }
 
     public FramedBlocks() {
         super(Registry.BLOCK);
@@ -75,5 +71,10 @@ public class FramedBlocks extends Registrar<Block> {
 
         TORCH_FRAME = register(new TorchFrame(torchFrameSettings), META.id("torch_frame"));
         WALL_TORCH_FRAME = register(new WallTorchFrame(torchFrameSettings), META.id("wall_torch_frame"));
+    }
+
+    private <A extends Block> A registerWithItem(final A block, final Identifier id, final Item.Settings settings) {
+        Registry.register(Registry.ITEM, id, new BlockItem(block, settings));
+        return register(block, id);
     }
 }

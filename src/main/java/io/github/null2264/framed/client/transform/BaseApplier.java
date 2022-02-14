@@ -20,10 +20,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public abstract class BaseApplier implements ToOptional<BaseApplier> {
-    public abstract TransformResult apply(MutableQuadView mqv, Direction dir, int index, Float4 us, Float4 vs, int color);
-
-    public static final BaseApplier NONE = new BaseApplier() {
+public abstract class BaseApplier implements ToOptional<BaseApplier>
+{
+    public static final BaseApplier NONE = new BaseApplier()
+    {
         @Override
         public TransformResult apply(final MutableQuadView mqv, final Direction dir, final int index, final Float4 us, final Float4 vs, final int color) {
             return TransformResult.NOTHING_TO_DO;
@@ -40,7 +40,10 @@ public abstract class BaseApplier implements ToOptional<BaseApplier> {
         }
     };
 
-    public static class Some extends BaseApplier implements ToOptional.Some<BaseApplier> {
+    public abstract TransformResult apply(MutableQuadView mqv, Direction dir, int index, Float4 us, Float4 vs, int color);
+
+    public static class Some extends BaseApplier implements ToOptional.Some<BaseApplier>
+    {
         private final BlockState state;
         private final Object2IntMap<Direction> sizes = new Object2IntOpenHashMap<>(7);
         private final Map<Direction, SpriteApplier[]> spriteAppliers = new HashMap<>(7);

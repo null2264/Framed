@@ -27,7 +27,8 @@ import static io.github.null2264.framed.Framed.META;
     CarpetFrame.class,
     PaneFrame.class
 })
-public abstract class SinglePartFrame implements FrameSlotInfo {
+public abstract class SinglePartFrame implements FrameSlotInfo
+{
     private SinglePartFrame() {
         throw new IllegalStateException("Mixin constructor should not run.");
     }
