@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -32,18 +32,18 @@ public class FramersHammer extends Item
         super(settings);
     }
 
-    private CompoundTag getTagOrAssignDefault(final ItemStack stack) {
-        if (stack.getTag() == null) {
-            final CompoundTag tag = new CompoundTag();
+    private NbtCompound getTagOrAssignDefault(final ItemStack stack) {
+        if (stack.getNbt() == null) {
+            final NbtCompound tag = new NbtCompound();
             tag.putString("mode", CopyMode.DEFAULT.toString());
-            stack.setTag(tag);
+            stack.setNbt(tag);
         }
-        return stack.getTag();
+        return stack.getNbt();
     }
 
     @Override
     public ActionResult useOnBlock(final ItemUsageContext context) {
-        final CompoundTag tag = getTagOrAssignDefault(context.getStack());
+        final NbtCompound tag = getTagOrAssignDefault(context.getStack());
         final Data data = Data.fromTag(tag);
 
         final BlockPos pos = context.getBlockPos();
@@ -69,7 +69,7 @@ public class FramersHammer extends Item
 
         if (player.isSneaking()) {
             player.sendMessage(new TranslatableText("gui.framed.framers_hammer.copy_settings"), true);
-            tag.put("storedData", frame.data().toTag());
+            tag.put("storedData", frame.data().writeNbt());
 
             return ActionResult.SUCCESS;
         } else {
@@ -88,7 +88,7 @@ public class FramersHammer extends Item
         }
 
         final ItemStack stack = user.getStackInHand(hand);
-        final CompoundTag tag = getTagOrAssignDefault(stack);
+        final NbtCompound tag = getTagOrAssignDefault(stack);
         final CopyMode mode = CopyMode.fromStringOrDefault(tag.getString("mode"));
 
         final CopyMode newMode = mode.next();
@@ -134,10 +134,10 @@ public class FramersHammer extends Item
             this.mode = mode;
         }
 
-        public static Data fromTag(final CompoundTag tag) {
+        public static Data fromTag(final NbtCompound tag) {
             return new Data(
                 tag.contains("storedData")
-                    ? FrameData.fromTag(tag.getCompound("storedData"))
+                    ? FrameData.readNbt(tag.getCompound("storedData"))
                     : null,
                 (tag.contains("mode")
                     ? CopyMode.fromString(tag.getString("mode"))
@@ -152,7 +152,7 @@ public class FramersHammer extends Item
                 return false;
             }
 
-            if (!storedData.sections().equals(frame.sections())) {
+            if (!storedData.getSections().equals(frame.getSections())) {
                 player.sendMessage(new TranslatableText("gui.framed.framers_hammer.different_format"), true);
                 return false;
             }
@@ -163,9 +163,9 @@ public class FramersHammer extends Item
                 }
 
                 if (!world.isClient) {
-                    IntStream.range(0, storedData.items().length)
+                    IntStream.range(0, storedData.getItems().length)
                         .boxed()
-                        .map(i -> new Pair<>(storedData.items()[i], i))
+                        .map(i -> new Pair<>(storedData.getItems()[i], i))
                         .flatMap(pair -> pair.getFirst().map(itemStack -> Stream.of(new Pair<>(itemStack, pair.getSecond()))).orElseGet(Stream::empty))
                         .forEach(pair -> frame.setStack(pair.getSecond(), pair.getFirst().copy()));
                 }
@@ -184,9 +184,9 @@ public class FramersHammer extends Item
                         throw new IllegalStateException("Unreachable.");
                 }
 
-                final Map<Item, Integer> itemSlotToFrameSlot = IntStream.range(0, storedData.items().length)
+                final Map<Item, Integer> itemSlotToFrameSlot = IntStream.range(0, storedData.getItems().length)
                     .boxed()
-                    .map(i -> new Pair<>(storedData.items()[i], i))
+                    .map(i -> new Pair<>(storedData.getItems()[i], i))
                     .flatMap(pair -> {
                         if (pair.getFirst().isPresent()) {
                             //noinspection OptionalGetWithoutIsPresent
@@ -197,9 +197,9 @@ public class FramersHammer extends Item
                     })
                     .collect(Pair.toMap());
 
-                final Map<Integer, Integer> playerSlotToFrameSlot = IntStream.range(0, player.inventory.size())
+                final Map<Integer, Integer> playerSlotToFrameSlot = IntStream.range(0, player.getInventory().size())
                     .boxed()
-                    .map(i -> new Pair<>(Optional.of(player.inventory.getStack(i)).filter(s -> !s.isEmpty()), i))
+                    .map(i -> new Pair<>(Optional.of(player.getInventory().getStack(i)).filter(s -> !s.isEmpty()), i))
                     .flatMap(pair -> {
                         final Optional<ItemStack> maybeStack = pair.getFirst();
                         if (maybeStack.isPresent()) {
@@ -215,7 +215,7 @@ public class FramersHammer extends Item
                     })
                     .collect(Pair.toMap());
 
-                if (requireAllItems && playerSlotToFrameSlot.size() != Arrays.stream(storedData.items()).filter(Optional::isPresent).count()) {
+                if (requireAllItems && playerSlotToFrameSlot.size() != Arrays.stream(storedData.getItems()).filter(Optional::isPresent).count()) {
                     return false;
                 }
 
@@ -224,11 +224,11 @@ public class FramersHammer extends Item
                         final int playerSlot = entry.getKey();
                         final int frameSlot = entry.getValue();
 
-                        if (frame.getStack(frameSlot).getItem() != player.inventory.getStack(playerSlot).getItem() && slotInfo.absoluteSlotIsValid(frame, state, frameSlot)) {
+                        if (frame.getStack(frameSlot).getItem() != player.getInventory().getStack(playerSlot).getItem() && slotInfo.absoluteSlotIsValid(frame, state, frameSlot)) {
                             if (!frame.getStack(frameSlot).isEmpty()) {
-                                player.inventory.offerOrDrop(world, frame.removeStack(frameSlot));
+                                player.getInventory().offerOrDrop(frame.removeStack(frameSlot));
                             }
-                            frame.setStack(frameSlot, player.inventory.removeStack(playerSlot, 1));
+                            frame.setStack(frameSlot, player.getInventory().removeStack(playerSlot, 1));
                         }
                     }
                 }

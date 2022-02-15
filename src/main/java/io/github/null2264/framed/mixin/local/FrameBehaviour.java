@@ -47,6 +47,7 @@ import java.util.function.Supplier;
 import static io.github.null2264.framed.Framed.*;
 import static io.github.null2264.framed.util.ValidQuery.checkIf;
 
+// Mixin all Framed Blocks to have identical behaviour
 @Mixin({
     BlockFrame.class,
     SlabFrame.class,
@@ -64,7 +65,7 @@ import static io.github.null2264.framed.util.ValidQuery.checkIf;
     CarpetFrame.class,
     PaneFrame.class
 })
-public abstract class FrameBehaviour extends Block implements BlockEntityProvider, Frame, FrameSlotInfo
+public abstract class FrameBehaviour extends Block implements BlockEntityProvider, FrameSlotInfo
 {
     @Unique
     @Nullable
@@ -76,6 +77,7 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
         throw new IllegalStateException("Mixin constructor should never run.");
     }
 
+    @SuppressWarnings("UnresolvedMixinReference")
     @Inject(method = "<init>*", at = @At("TAIL"))
     void setFramePropertiesDefaultState(CallbackInfo ci) {
         setDefaultState(getDefaultState()
@@ -130,7 +132,7 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
     private void removeStack(final World world, final FrameBlockEntity from, final PlayerEntity to, final int slot, final boolean giveItem) {
         final ItemStack stack = from.removeStack(slot);
         if (!stack.isEmpty() && giveItem) {
-            to.inventory.offerOrDrop(world, stack);
+            to.getInventory().offerOrDrop(stack);
 
             world.playSound(null, from.getPos(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2f, (float) (Math.random() - Math.random()) * 1.4f + 2f);
         }
@@ -140,7 +142,7 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
         world.setBlockState(frame.getPos(), state);
 
         if (player.isSneaking()) {
-            for (final int i : frame.sections().itemIndices()) {
+            for (final int i : frame.getSections().itemIndices()) {
                 removeStack(world, frame, player, i, giveItem);
             }
         } else {
@@ -235,7 +237,7 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
                 if (playerStack.getItem() != maybeStack.orElse(ItemStack.EMPTY).getItem()) {
                     if (!world.isClient) {
                         if (!player.isCreative() && maybeStack.isPresent()) {
-                            player.inventory.offerOrDrop(world, maybeStack.get());
+                            player.getInventory().offerOrDrop(maybeStack.get());
                         }
                         frame.copyFrom(absoluteSlot, playerStack, 1, !player.isCreative());
                         onSuccess.get();
@@ -249,13 +251,13 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
             final ValidQuery.ItemStackValidQuery query = checkIf(playerStack);
 
             if (query.isValidForOverlay()) {
-                final int absoluteSlot = frame.sections().overlay().makeAbsolute(relativeSlot);
+                final int absoluteSlot = frame.getSections().overlay().makeAbsolute(relativeSlot);
                 return swapItems.apply(frame.overlayItems(), absoluteSlot, () -> Unit.INSTANCE);
             }
 
             final Optional<BlockState> maybeBaseState = query.isValidForBase(i -> Optional.ofNullable(i.getBlock().getPlacementState(new ItemPlacementContext(new ItemUsageContext(player, hand, hit)))), world, pos);
             if (maybeBaseState.isPresent()) {
-                final int absoluteSlot = frame.sections().base().makeAbsolute(relativeSlot);
+                final int absoluteSlot = frame.getSections().base().makeAbsolute(relativeSlot);
                 return swapItems.apply(frame.baseItems(), absoluteSlot, () -> {
                     frame.baseStates()[relativeSlot] = maybeBaseState;
                     return Unit.INSTANCE;
@@ -264,7 +266,7 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
 
             if (query.isValidForSpecial()) {
                 final SpecialItems.SpecialItem specialItem = SPECIAL_ITEMS.MAP.get(playerStack.getItem());
-                final int slot = frame.sections().special().makeAbsolute(specialItem.offset());
+                final int slot = frame.getSections().special().makeAbsolute(specialItem.offset());
 
                 if (frame.getStack(slot).isEmpty()) {
                     if (!world.isClient) {
@@ -292,12 +294,12 @@ public abstract class FrameBehaviour extends Block implements BlockEntityProvide
 
         if (placer instanceof PlayerEntity) {
             final PlayerEntity player = (PlayerEntity) placer;
-            if (player.getOffHandStack().getItem() != ITEMS.FRAMERS_HAMMER || player.getOffHandStack().getTag() == null) {
+            if (player.getOffHandStack().getItem() != ITEMS.FRAMERS_HAMMER || player.getOffHandStack().getNbt() == null) {
                 tryCopy = false;
             } else {
                 final BlockEntity blockEntity = world.getBlockEntity(pos);
                 if (blockEntity instanceof FrameBlockEntity) {
-                    tryCopy = FramersHammer.Data.fromTag(player.getOffHandStack().getTag()).applySettings(this, state, (FrameBlockEntity) blockEntity, player, world);
+                    tryCopy = FramersHammer.Data.fromTag(player.getOffHandStack().getNbt()).applySettings(this, state, (FrameBlockEntity) blockEntity, player, world);
                 } else {
                     tryCopy = false;
                 }

@@ -3,7 +3,9 @@ package io.github.null2264.framed.mixin.local;
 import io.github.null2264.framed.block.entity.FrameBlockEntity;
 import io.github.null2264.framed.block.frame.*;
 import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -36,7 +38,7 @@ public class FrameEntityProvider implements BlockEntityProvider
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(final BlockView world) {
-        return new FrameBlockEntity(BLOCK_ENTITY_TYPES.FRAME, META.FRAME_SECTIONS);
+    public BlockEntity createBlockEntity(final BlockPos pos, final BlockState state) {
+        return new FrameBlockEntity(pos, state, META.FRAME_SECTIONS);
     }
 }

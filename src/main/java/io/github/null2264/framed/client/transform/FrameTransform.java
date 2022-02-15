@@ -52,7 +52,7 @@ public final class FrameTransform implements RenderContext.QuadTransform
                 //noinspection ConstantConditions // any frame with a tag *should* have these keys
                 return new FrameTransform(
                     slotInfo,
-                    FrameData.fromTag(stack.getSubTag("BlockEntityTag").getCompound("frameData")),
+                    FrameData.readNbt(stack.getSubTag("BlockEntityTag").getCompound("frameData")),
                     randomSupplier
                 );
             }

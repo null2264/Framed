@@ -3,8 +3,8 @@ package io.github.null2264.framed.block.frame.data;
 import io.github.null2264.framed.util.Section;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtList;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,8 +27,8 @@ public class Sections
         this(makeSections(IntStream.concat(IntStream.of(partCount, partCount, SPECIAL_ITEMS.MAP.size()), Arrays.stream(otherSizes))));
     }
 
-    public static Sections fromTag(final ListTag tag) {
-        return new Sections(makeSections(tag.stream().mapToInt(t -> ((IntTag) t).getInt())));
+    public static Sections readNbt(final NbtList tag) {
+        return new Sections(makeSections(tag.stream().mapToInt(t -> ((NbtInt) t).intValue())));
     }
 
     private static Section[] makeSections(final IntStream sizes) {
@@ -90,11 +90,11 @@ public class Sections
         return baseStates;
     }
 
-    public ListTag toTag() {
-        final ListTag tag = new ListTag();
+    public NbtList toNbt() {
+        final NbtList tag = new NbtList();
 
         for (final Section section : sections) {
-            tag.add(IntTag.of(section.size()));
+            tag.add(NbtInt.of(section.size()));
         }
 
         return tag;

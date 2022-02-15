@@ -1,24 +1,23 @@
 package io.github.null2264.framed.block.entity;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.null2264.framed.Framed;
 import io.github.null2264.framed.block.frame.data.FrameData;
 import io.github.null2264.framed.block.frame.data.Sections;
 import io.github.null2264.framed.gui.FrameGuiDescription;
 import io.github.null2264.framed.items.SpecialItems;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.rendering.data.v1.RenderAttachmentBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -26,6 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
@@ -33,30 +33,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static io.github.null2264.framed.Framed.META;
 import static io.github.null2264.framed.Framed.SPECIAL_ITEMS;
 import static io.github.null2264.framed.util.GetItemBeforeEmptyUtil.getItemBeforeEmpty;
 import static io.github.null2264.framed.util.ValidQuery.checkIf;
 
-public class FrameBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory, RenderAttachmentBlockEntity, BlockEntityClientSerializable
+public class FrameBlockEntity extends LockableContainerBlockEntity implements ExtendedScreenHandlerFactory, RenderAttachmentBlockEntity
 {
     private FrameData data;
 
-    public FrameBlockEntity(final BlockEntityType<?> type, final Sections sections) {
-        super(type);
+    public FrameBlockEntity(BlockPos blockPos, BlockState blockState) {
+        this(blockPos, blockState, META.FRAME_SECTIONS);
+    }
 
-        data = new FrameData(sections);
+    public FrameBlockEntity(BlockPos blockPos, BlockState blockState, final Sections sections) {
+        super(Framed.BLOCK_ENTITY_TYPES.FRAME, blockPos, blockState);
+
+        setData(sections);
     }
 
     public FrameData data() {
         return data;
     }
 
-    public Sections sections() {
-        return data.sections();
+    public void setData(Sections sections) {
+        data = new FrameData(sections);
+    }
+
+    public Sections getSections() {
+        return data.getSections();
     }
 
     public Optional<ItemStack>[] items() {
-        return data.items();
+        return data.getItems();
     }
 
     public List<Optional<ItemStack>> baseItems() {
@@ -96,7 +105,7 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
 
     @Override
     public boolean isValid(final int slot, final ItemStack stack) {
-        switch (sections().findSectionIndexOf(slot)) {
+        switch (getSections().findSectionIndexOf(slot)) {
             case Sections.BASE_INDEX:
                 return checkIf(stack).isValidForBase(s -> Optional.of(s.getBlock().getDefaultState()), world, pos).isPresent();
             case Sections.OVERLAY_INDEX:
@@ -109,9 +118,9 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
     }
 
     private void beforeRemove(final int slot) {
-        switch (sections().findSectionIndexOf(slot)) {
+        switch (getSections().findSectionIndexOf(slot)) {
             case Sections.BASE_INDEX:
-                baseStates()[sections().base().makeRelative(slot)] = Optional.empty();
+                baseStates()[getSections().base().makeRelative(slot)] = Optional.empty();
                 break;
             case Sections.OVERLAY_INDEX:
                 break;
@@ -129,7 +138,7 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
         beforeRemove(slot);
 
         return Optional.of(slot)
-            .filter(s -> sections().itemIndices().contains(s))
+            .filter(s -> getSections().itemIndices().contains(s))
             .filter(s -> amount > 0)
             .flatMap(s -> items()[s])
             .map(orig -> new Pair<>(orig, orig.split(amount)))
@@ -185,7 +194,7 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
 
     @Override
     public void setStack(final int slot, final ItemStack stack) {
-        final int sectionIndex = sections().findSectionIndexOf(slot);
+        final int sectionIndex = getSections().findSectionIndexOf(slot);
 
         final Runnable setStack = () -> {
             items()[slot] = Optional.of(stack);
@@ -196,7 +205,7 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
         switch (sectionIndex) {
             case Sections.BASE_INDEX:
                 setStack.run();
-                final int baseSlot = sections().base().makeRelative(slot);
+                final int baseSlot = getSections().base().makeRelative(slot);
                 baseStates()[baseSlot] = baseItems().get(baseSlot)
                     .map(ItemStack::getItem)
                     .filter(i -> i instanceof BlockItem)
@@ -233,7 +242,8 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
             if (world.isClient) {
                 MinecraftClient.getInstance().worldRenderer.updateBlock(world, pos, getCachedState(), state, 1);
             } else {
-                sync();
+                // TODO: Find out wth is this sync function used for
+                // sync();
 
                 PlayerLookup.tracking(this).forEach(p -> p.networkHandler.sendPacket(this.toUpdatePacket()));
 
@@ -248,26 +258,21 @@ public class FrameBlockEntity extends LockableContainerBlockEntity implements Ex
     }
 
     @Override
-    public CompoundTag toTag(final CompoundTag tag) {
-        toClientTag(tag);
-        return super.toTag(tag);
+    public void writeNbt(NbtCompound tag) {
+        writeClientNbt(tag);
     }
 
     @Override
-    public void fromTag(final BlockState state, final CompoundTag tag) {
-        fromClientTag(tag);
-        super.fromTag(state, tag);
+    public void readNbt(NbtCompound tag) {
+        readClientNbt(tag);
     }
 
-    @Override
-    public CompoundTag toClientTag(final CompoundTag tag) {
-        tag.put("frameData", data.toTag());
-        return tag;
+    public void writeClientNbt(NbtCompound tag) {
+        tag.put("frameData", data.writeNbt());
     }
 
-    @Override
-    public void fromClientTag(final CompoundTag compoundTag) {
-        data = FrameData.fromTag(compoundTag.getCompound("frameData"));
+    public void readClientNbt(NbtCompound NbtCompound) {
+        data = FrameData.readNbt(NbtCompound.getCompound("frameData"));
         this.markDirty();
     }
 

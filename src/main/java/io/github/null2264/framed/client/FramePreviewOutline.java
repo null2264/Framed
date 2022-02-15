@@ -46,8 +46,8 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.client.util.math.Vector4f;
+import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.Vector4f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
@@ -177,9 +177,9 @@ public class FramePreviewOutline
     private static void render(final BakedQuad quad, final MatrixStack.Entry entry, final VertexConsumer consumer, final float r, final float g, final float b, final float a) {
         final int[] is = quad.getVertexData();
         final Vec3i vec3i = quad.getFace().getVector();
-        final Vector3f vector3f = new Vector3f((float) vec3i.getX(), (float) vec3i.getY(), (float) vec3i.getZ());
-        final Matrix4f matrix4f = entry.getModel();
-        vector3f.transform(entry.getNormal());
+        final Vec3f vector3f = new Vec3f((float) vec3i.getX(), (float) vec3i.getY(), (float) vec3i.getZ());
+        final Matrix4f matrix4f = entry.getPositionMatrix();
+        vector3f.transform(entry.getNormalMatrix());
 
         final int j = is.length / 8;
         final MemoryStack memoryStack = MemoryStack.stackPush();

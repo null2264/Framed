@@ -79,10 +79,10 @@ public class WallBlockMixin extends Block
             WallShape wallShape4 = state.get(SOUTH_SHAPE);
 
             VoxelShape voxelShape10 = VoxelShapes.empty();
-            voxelShape10 = method_24426(voxelShape10, wallShape, voxelShape5, voxelShape9);
-            voxelShape10 = method_24426(voxelShape10, wallShape3, voxelShape4, voxelShape8);
-            voxelShape10 = method_24426(voxelShape10, wallShape2, voxelShape2, voxelShape6);
-            voxelShape10 = method_24426(voxelShape10, wallShape4, voxelShape3, voxelShape7);
+            voxelShape10 = getVoxelShape(voxelShape10, wallShape, voxelShape5, voxelShape9);
+            voxelShape10 = getVoxelShape(voxelShape10, wallShape3, voxelShape4, voxelShape8);
+            voxelShape10 = getVoxelShape(voxelShape10, wallShape2, voxelShape2, voxelShape6);
+            voxelShape10 = getVoxelShape(voxelShape10, wallShape4, voxelShape3, voxelShape7);
             if (Boolean.TRUE.equals(boolean_)) {
                 voxelShape10 = VoxelShapes.union(voxelShape10, voxelShape);
             }

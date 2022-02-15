@@ -14,7 +14,6 @@ import net.minecraft.util.math.Vec3d;
 
 import javax.annotation.Nullable;
 
-import static io.github.null2264.framed.Framed.BLOCK_ENTITY_TYPES;
 import static io.github.null2264.framed.Framed.META;
 
 public class SlabFrame extends SlabBlock implements FrameSlotInfo, BlockEntityProvider
@@ -57,11 +56,11 @@ public class SlabFrame extends SlabBlock implements FrameSlotInfo, BlockEntityPr
             default:
                 throw new IllegalStateException("Unreachable.");
         }
-        switch (frame.sections().findSectionIndexOf(slot)) {
+        switch (frame.getSections().findSectionIndexOf(slot)) {
             case Sections.BASE_INDEX:
-                return frame.sections().base().makeAbsolute(slot) == wantedSlot;
+                return frame.getSections().base().makeAbsolute(slot) == wantedSlot;
             case Sections.OVERLAY_INDEX:
-                return frame.sections().overlay().makeAbsolute(slot) == wantedSlot;
+                return frame.getSections().overlay().makeAbsolute(slot) == wantedSlot;
             case Sections.SPECIAL_INDEX:
                 return true;
             default:
@@ -78,6 +77,6 @@ public class SlabFrame extends SlabBlock implements FrameSlotInfo, BlockEntityPr
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new FrameBlockEntity(BLOCK_ENTITY_TYPES.SLAB_FRAME, META.SLAB_FRAME_SECTIONS);
+        return new FrameBlockEntity(pos, state, META.SLAB_FRAME_SECTIONS);
     }
 }

@@ -17,7 +17,7 @@ public class FrameGuiDescription extends SyncedGuiDescription
             syncId,
             playerInventory,
             context,
-            context.run((world, pos) -> (FrameBlockEntity) world.getBlockEntity(pos))
+            context.get((world, pos) -> (FrameBlockEntity) world.getBlockEntity(pos))
                 .orElseThrow(() -> new IllegalArgumentException("FrameGuiDescription can only be used with FrameBlockEntity."))
         );
     }
@@ -30,22 +30,22 @@ public class FrameGuiDescription extends SyncedGuiDescription
         root.add(centered(label("gui.framed.frame.base_label")), 1, 2, 8, 2);
 
         root.add(
-            slotRow(SingleItemSlots::new, blockInventory, frame.sections().base()),
-            5 - frame.sections().base().size(), 4
+            slotRow(SingleItemSlots::new, blockInventory, frame.getSections().base()),
+            5 - frame.getSections().base().size(), 4
         );
 
         root.add(centered(label("gui.framed.frame.overlay_label")), 9, 2, 8, 2);
 
         root.add(
-            slotRow(SingleItemSlots::new, blockInventory, frame.sections().overlay()),
-            13 - frame.sections().overlay().size(), 4
+            slotRow(SingleItemSlots::new, blockInventory, frame.getSections().overlay()),
+            13 - frame.getSections().overlay().size(), 4
         );
 
         root.add(centered(label("gui.framed.frame.special_label")), 0, 6, 18, 2);
 
         SPECIAL_ITEMS.MAP.forEach((item, specialItem) -> root.add(
-            new SingleItemSlots(blockInventory, frame.sections().special().makeAbsolute(specialItem.offset()), 1, 1, false),
-            9 - frame.sections().special().size() + specialItem.offset() * 2, 8
+            new SingleItemSlots(blockInventory, frame.getSections().special().makeAbsolute(specialItem.offset()), 1, 1, false),
+            9 - frame.getSections().special().size() + specialItem.offset() * 2, 8
         ));
 
         root.add(createPlayerInventoryPanel(), 0, 11);

@@ -45,6 +45,6 @@ public abstract class SinglePartFrame implements FrameSlotInfo
 
     @Override
     public boolean absoluteSlotIsValid(final FrameBlockEntity frame, final BlockState state, final int slot) {
-        return frame.sections().containsSlot(slot);
+        return frame.getSections().containsSlot(slot);
     }
 }

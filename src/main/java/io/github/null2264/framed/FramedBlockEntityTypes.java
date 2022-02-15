@@ -1,6 +1,7 @@
 package io.github.null2264.framed;
 
 import io.github.null2264.framed.block.entity.FrameBlockEntity;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
@@ -14,8 +15,8 @@ public class FramedBlockEntityTypes extends Registrar<BlockEntityType<?>>
     }
 
     public final BlockEntityType<FrameBlockEntity> FRAME = register(
-        BlockEntityType.Builder.create(
-            () -> new FrameBlockEntity(this.FRAME, META.FRAME_SECTIONS),
+        FabricBlockEntityTypeBuilder.create(
+            FrameBlockEntity::new,
             BLOCKS.BLOCK_FRAME,
             BLOCKS.STAIRS_FRAME,
             BLOCKS.FENCE_FRAME,
@@ -29,16 +30,9 @@ public class FramedBlockEntityTypes extends Registrar<BlockEntityType<?>>
             BLOCKS.WALL_FRAME,
             BLOCKS.LAYER_FRAME,
             BLOCKS.CARPET_FRAME,
-            BLOCKS.PANE_FRAME
-        ).build(null),
-        META.id("frame")
-    );
-
-    public final BlockEntityType<FrameBlockEntity> SLAB_FRAME = register(
-        BlockEntityType.Builder.create(
-            () -> new FrameBlockEntity(this.SLAB_FRAME, META.SLAB_FRAME_SECTIONS),
+            BLOCKS.PANE_FRAME,
             BLOCKS.SLAB_FRAME
         ).build(null),
-        META.id("slab_frame")
+        META.id("frame")
     );
 }
