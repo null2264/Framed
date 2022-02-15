@@ -1,7 +1,6 @@
 package io.github.null2264.framed.client;
 
 import com.mojang.serialization.Codec;
-import grondag.jmx.api.QuadTransformRegistry;
 import io.github.null2264.framed.client.assets.OverlayAssetListener;
 import io.github.null2264.framed.client.assets.overlay.OffsetterRegistry;
 import io.github.null2264.framed.client.assets.overlay.ZeroOffsetter;
@@ -42,10 +41,13 @@ public class FramedClient implements ClientModInitializer
 
         FramedClient.CODECS = new FramedCodecs();
 
+        // TODO: Wth is this?
+        /*
         QuadTransformRegistry.INSTANCE.register(
             META.id("frame_transform"),
             FrameTransform.SOURCE
         );
+         */
 
         ScreenRegistry.register(META.FRAME_SCREEN_HANDLER_TYPE, FrameScreen.FACTORY);
 
@@ -69,8 +71,8 @@ public class FramedClient implements ClientModInitializer
         FabricModelPredicateProviderRegistry.register(
             ITEMS.FRAMERS_HAMMER,
             META.id("hammer_mode"),
-            (stack, world, entity) ->
-                Optional.ofNullable(stack.getTag())
+            (stack, world, entity, i) ->
+                Optional.ofNullable(stack.getNbt())
                     .map(t -> t.getString("mode"))
                     .flatMap(FramersHammer.CopyMode::fromString)
                     .orElse(FramersHammer.CopyMode.DEFAULT)
