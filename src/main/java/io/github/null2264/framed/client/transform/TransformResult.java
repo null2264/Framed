@@ -9,6 +9,7 @@ public class TransformResult
     public final Status status;
     public final @Nullable
     String message;
+
     private TransformResult(Status status, @Nullable String message) {
         this.status = status;
         this.message = message;

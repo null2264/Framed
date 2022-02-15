@@ -29,6 +29,7 @@ public class FrameData
         this.items = items;
         this.baseStates = baseStates;
     }
+
     public FrameData(@Nonnull final Sections sections) {
         this(sections, sections.makeItems(), sections.makeBaseStates());
     }

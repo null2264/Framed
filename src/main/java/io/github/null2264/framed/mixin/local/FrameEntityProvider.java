@@ -6,12 +6,10 @@ import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 
 import javax.annotation.Nullable;
 
-import static io.github.null2264.framed.Framed.BLOCK_ENTITY_TYPES;
 import static io.github.null2264.framed.Framed.META;
 
 @Mixin({

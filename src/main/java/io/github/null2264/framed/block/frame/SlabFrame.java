@@ -20,6 +20,7 @@ public class SlabFrame extends SlabBlock implements FrameSlotInfo, BlockEntityPr
 {
     public static final int LOWER_SLOT = 0;
     public static final int UPPER_SLOT = 1;
+
     public SlabFrame(final Settings settings) {
         super(settings);
     }

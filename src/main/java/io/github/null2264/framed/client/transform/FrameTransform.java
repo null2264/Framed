@@ -97,6 +97,7 @@ public final class FrameTransform implements RenderContext.QuadTransform
             return new Data(baseApplier, overlay, cachedOverlayColor, color);
         }).toArray(Data[]::new);
     }
+
     private FrameTransform(final FrameSlotInfo slotInfo, final FrameData frameData, final Supplier<Random> randomSupplier) {
         //noinspection ConstantConditions // player cannot be null while rendering, stack must have tag or this constructor will not run
         this(

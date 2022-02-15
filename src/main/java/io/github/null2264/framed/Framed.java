@@ -1,7 +1,10 @@
 package io.github.null2264.framed;
 
+import io.github.null2264.framed.client.FramedConfig;
 import io.github.null2264.framed.data.OverlayDataListener;
 import io.github.null2264.framed.items.SpecialItems;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resource.ResourceType;
@@ -20,6 +23,8 @@ public class Framed implements ModInitializer
 
     @Override
     public void onInitialize() {
+        AutoConfig.register(FramedConfig.class, JanksonConfigSerializer::new);
+
         PROPERTIES = new FramedProperties();
         SPECIAL_ITEMS = new SpecialItems();
 

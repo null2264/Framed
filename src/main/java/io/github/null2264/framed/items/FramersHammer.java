@@ -129,6 +129,7 @@ public class FramersHammer extends Item
         private final @Nullable
         FrameData storedData;
         private final CopyMode mode;
+
         public Data(@Nullable final FrameData storedData, final CopyMode mode) {
             this.storedData = storedData;
             this.mode = mode;
